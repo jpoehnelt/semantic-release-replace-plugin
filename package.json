@@ -1,0 +1,64 @@
+{
+  "name": "@google/semantic-release-replace-plugin",
+  "version": "1.0.0",
+  "description": "Semantic Release Replace Plugin",
+  "keywords": [
+    "semantic-release",
+    "node",
+    "replace",
+    "google"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/google/semantic-release-replace-plugin.git"
+  },
+  "license": "Apache-2.0",
+  "author": {
+    "name": "Justin Poehnelt",
+    "email": "jpoehnelt@google.com"
+  },
+  "main": "dist/index.js",
+  "files": [
+    "dist/*",
+    "LICENSE",
+    "README.md"
+  ],
+  "scripts": {
+    "all": "npm run build && npm run format-check && npm run lint && npm test && npm run docs",
+    "build": "tsc",
+    "docs": "rm -rf docs && typedoc",
+    "format": "prettier --write **/*.ts",
+    "format-check": "prettier --check **/*.ts",
+    "lint": "eslint src/**/*.ts",
+    "lint-fix": "eslint --fix src/**/*.ts",
+    "test": "jest"
+  },
+  "dependencies": {
+    "jest-diff": "^25.2.3",
+    "replace-in-file": "^5.0.2"
+  },
+  "devDependencies": {
+    "@types/jest": "^25.1.4",
+    "@types/lodash": "^4.14.149",
+    "@types/node": "^12.12.30",
+    "@types/semantic-release": "^15.13.1",
+    "@typescript-eslint/parser": "^2.24.0",
+    "eslint": "^5.16.0",
+    "eslint-plugin-github": "^2.0.0",
+    "eslint-plugin-jest": "^22.21.0",
+    "fs-extra": "^9.0.0",
+    "jest": "^24.9.0",
+    "jest-circus": "^24.9.0",
+    "lodash": "^4.17.15",
+    "prettier": "^1.19.1",
+    "tmp": "^0.1.0",
+    "ts-jest": "^24.2.0",
+    "typedoc": "^0.17.3",
+    "typedoc-plugin-markdown": "^2.2.17",
+    "typescript": "^3.6.4"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://wombat-dressing-room.appspot.com"
+  }
+}
