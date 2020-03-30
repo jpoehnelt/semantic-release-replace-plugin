@@ -1,6 +1,6 @@
 # Semantic Release Replace Plugin
 
-[![npm](https://img.shields.io/npm/v/google/semantic-release-replace-plugin)](https://www.npmjs.com/package/@google/semantic-release-replace-plugin)
+[![npm](https://img.shields.io/npm/v/@google/semantic-release-replace-plugin)](https://www.npmjs.com/package/@google/semantic-release-replace-plugin)
 ![Build](https://github.com/google/semantic-release-replace-plugin/workflows/Build/badge.svg)
 ![Release](https://github.com/google/semantic-release-replace-plugin/workflows/Release/badge.svg)
 [![codecov](https://codecov.io/gh/google/semantic-release-replace-plugin/branch/master/graph/badge.svg)](https://codecov.io/gh/google/semantic-release-replace-plugin)
