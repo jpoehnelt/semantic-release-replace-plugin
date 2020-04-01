@@ -19,6 +19,8 @@ $ npm install @google/semantic-release-replace-plugin -D
 
 ## Usage
 
+The following example uses this plugin to demonstrate using semantic-release in a Python package where `__VERSION__` is defined in the root `__init__.py` file.
+
 ```json
 {
   "plugins": [
