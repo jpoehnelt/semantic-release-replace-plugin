@@ -39,7 +39,7 @@ let d: tmp.DirSyncObject;
 
 beforeEach(() => {
   // @ts-ignore-next-line
-  d = tmp.dirSync();
+  d = tmp.dirSync({ unsafeCleanup: true });
   fs.copySync("__tests__/project", d.name);
 });
 

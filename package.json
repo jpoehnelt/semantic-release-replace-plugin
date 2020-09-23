@@ -51,7 +51,7 @@
     "jest-circus": "^24.9.0",
     "lodash": "^4.17.15",
     "prettier": "^1.19.1",
-    "tmp": "^0.1.0",
+    "tmp": "^0.2.1",
     "ts-jest": "^24.2.0",
     "typedoc": "^0.18.0",
     "typedoc-plugin-markdown": "^2.2.17",
