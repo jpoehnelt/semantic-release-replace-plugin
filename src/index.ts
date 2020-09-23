@@ -115,7 +115,7 @@ export async function prepare(
 
       if (!isEqual(actual.sort(), results.sort())) {
         throw new Error(
-          `Results differed from actual! \n${diffDefault(results, actual)}`
+          `Expected match not found!\n${diffDefault(actual, results)}`
         );
       }
     }
