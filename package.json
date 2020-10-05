@@ -34,7 +34,7 @@
     "test": "jest"
   },
   "dependencies": {
-    "jest-diff": "^25.5.0",
+    "jest-diff": "^26.4.2",
     "replace-in-file": "^5.0.2"
   },
   "devDependencies": {
