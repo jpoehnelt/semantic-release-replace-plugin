@@ -26,13 +26,13 @@ const context = {
     gitTag: "2.0.0",
     version: "2.0.0",
     notes: "",
-    gitHead: "asdfasdf"
+    gitHead: "asdfasdf",
   },
   logger: {
     log: jest.fn(),
-    error: console.error
+    error: console.error,
   },
-  env: process.env
+  env: process.env,
 };
 
 let d: tmp.DirSyncObject;
@@ -63,13 +63,13 @@ test("prepare should replace using regex", async () => {
     {
       files: [path.join(d.name, "/*.py")],
       from: '__VERSION__ = ".*"',
-      to: '__VERSION__ = "${nextRelease.version}"'
+      to: '__VERSION__ = "${nextRelease.version}"',
     },
     {
       files: [path.join(d.name, "/build.gradle")],
       from: "version = '.*'",
-      to: "version = '${nextRelease.version}'"
-    }
+      to: "version = '${nextRelease.version}'",
+    },
   ];
 
   await prepare({ replacements }, context);
@@ -95,11 +95,11 @@ test("prepare should use result check", async () => {
           file: path.join(d.name, "/__init__.py"),
           hasChanged: true,
           numMatches: 1,
-          numReplacements: 1
-        }
+          numReplacements: 1,
+        },
       ],
-      countMatches: true
-    }
+      countMatches: true,
+    },
   ];
 
   await prepare({ replacements }, context);
@@ -117,8 +117,8 @@ test("prepare should throw error if result mismatch", async () => {
       from: '__VERSION__ = "1.0.0"',
       to: '__VERSION__ = "${nextRelease.version}"',
       results: [],
-      countMatches: true
-    }
+      countMatches: true,
+    },
   ];
   await expect(prepare({ replacements }, context)).rejects.toThrow();
 });
@@ -134,11 +134,11 @@ test("prepare should use result check", async () => {
           file: path.join(d.name, "/__init__.py"),
           hasChanged: true,
           numMatches: 1,
-          numReplacements: 1
-        }
+          numReplacements: 1,
+        },
       ],
-      countMatches: true
-    }
+      countMatches: true,
+    },
   ];
 
   await prepare({ replacements }, context);
@@ -160,11 +160,11 @@ test("replacements are global", async () => {
           file: path.join(d.name, "/foo.md"),
           hasChanged: true,
           numMatches: 2,
-          numReplacements: 2
-        }
+          numReplacements: 2,
+        },
       ],
-      countMatches: true
-    }
+      countMatches: true,
+    },
   ];
 
   await prepare({ replacements }, context);
