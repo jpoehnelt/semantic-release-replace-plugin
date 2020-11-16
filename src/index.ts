@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
+import { ReplaceInFileConfig, replaceInFile } from "replace-in-file";
 import { isEqual, template } from "lodash";
-import replaceInFile, { ReplaceInFileConfig } from "replace-in-file";
 
 import { Context } from "semantic-release";
 import diffDefault from "jest-diff";

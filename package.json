@@ -36,7 +36,7 @@
   "dependencies": {
     "jest-diff": "^26.5.2",
     "lodash": "^4.17.20",
-    "replace-in-file": "^5.0.2"
+    "replace-in-file": "^6.1.0"
   },
   "devDependencies": {
     "@types/jest": "^26.0.14",
