@@ -105,7 +105,7 @@ export async function prepare(
     const replaceInFileConfig = replacement as ReplaceInFileConfig;
 
     replaceInFileConfig.to = template(replacement.to)({ ...context });
-    replaceInFileConfig.from = new RegExp(replacement.from, "g");
+    replaceInFileConfig.from = new RegExp(replacement.from, "gm");
 
     let actual = await replaceInFile(replaceInFileConfig);
 
