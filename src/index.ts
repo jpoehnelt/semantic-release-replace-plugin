@@ -43,7 +43,7 @@ export interface Replacement {
    * The context object is used to render the template. Additional values
    * can be found at: https://semantic-release.gitbook.io/semantic-release/developer-guide/js-api#result
    *
-   * For advanced replacement, pass in a function to replace non-standard variables
+   * For advanced replacement (NOTE: only for use with `release.config.js` file version), pass in a function to replace non-standard variables
    * ```
    * {
    *    from: `__VERSION__ = 11`, // eslint-disable-line
