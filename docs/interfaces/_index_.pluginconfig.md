@@ -46,6 +46,6 @@ PluginConfig is used to provide multiple replacement.
 
 •  **replacements**: [Replacement](_index_.replacement.md)[]
 
-*Defined in [index.ts:93](https://github.com/Borduhh/semantic-release-replace-plugin/blob/d2e8b02/src/index.ts#L93)*
+*Defined in [index.ts:101](https://github.com/Borduhh/semantic-release-replace-plugin/blob/6dd4918/src/index.ts#L101)*
 
 An array of replacements to be made.
