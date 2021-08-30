@@ -1,4 +1,6 @@
-[@google/semantic-release-replace-plugin](../README.md) › ["index"](../modules/_index_.md) › [Replacement](_index_.replacement.md)
+**[@google/semantic-release-replace-plugin](../README.md)**
+
+> [Globals](../README.md) / ["index"](../modules/_index_.md) / Replacement
 
 # Interface: Replacement
 
@@ -13,74 +15,74 @@ with the difference being the single string for `to` and `from`.
 
 ### Properties
 
-* [allowEmptyPaths](_index_.replacement.md#optional-allowemptypaths)
-* [countMatches](_index_.replacement.md#optional-countmatches)
-* [disableGlobs](_index_.replacement.md#optional-disableglobs)
-* [dry](_index_.replacement.md#optional-dry)
-* [encoding](_index_.replacement.md#optional-encoding)
+* [allowEmptyPaths](_index_.replacement.md#allowemptypaths)
+* [countMatches](_index_.replacement.md#countmatches)
+* [disableGlobs](_index_.replacement.md#disableglobs)
+* [dry](_index_.replacement.md#dry)
+* [encoding](_index_.replacement.md#encoding)
 * [files](_index_.replacement.md#files)
 * [from](_index_.replacement.md#from)
-* [ignore](_index_.replacement.md#optional-ignore)
-* [results](_index_.replacement.md#optional-results)
+* [ignore](_index_.replacement.md#ignore)
+* [results](_index_.replacement.md#results)
 * [to](_index_.replacement.md#to)
 
 ## Properties
 
-### `Optional` allowEmptyPaths
+### allowEmptyPaths
 
-• **allowEmptyPaths**? : *boolean*
+• `Optional` **allowEmptyPaths**: boolean
 
-*Defined in [index.ts:48](https://github.com/google/semantic-release-replace-plugin/blob/master/src/index.ts#L48)*
-
-___
-
-### `Optional` countMatches
-
-• **countMatches**? : *boolean*
-
-*Defined in [index.ts:49](https://github.com/google/semantic-release-replace-plugin/blob/master/src/index.ts#L49)*
+*Defined in [index.ts:48](https://github.com/Borduhh/semantic-release-replace-plugin/blob/d2e8b02/src/index.ts#L48)*
 
 ___
 
-### `Optional` disableGlobs
+### countMatches
 
-• **disableGlobs**? : *boolean*
+• `Optional` **countMatches**: boolean
 
-*Defined in [index.ts:50](https://github.com/google/semantic-release-replace-plugin/blob/master/src/index.ts#L50)*
-
-___
-
-### `Optional` dry
-
-• **dry**? : *boolean*
-
-*Defined in [index.ts:52](https://github.com/google/semantic-release-replace-plugin/blob/master/src/index.ts#L52)*
+*Defined in [index.ts:49](https://github.com/Borduhh/semantic-release-replace-plugin/blob/d2e8b02/src/index.ts#L49)*
 
 ___
 
-### `Optional` encoding
+### disableGlobs
 
-• **encoding**? : *string*
+• `Optional` **disableGlobs**: boolean
 
-*Defined in [index.ts:51](https://github.com/google/semantic-release-replace-plugin/blob/master/src/index.ts#L51)*
+*Defined in [index.ts:50](https://github.com/Borduhh/semantic-release-replace-plugin/blob/d2e8b02/src/index.ts#L50)*
 
 ___
 
-###  files
+### dry
 
-• **files**: *string[]*
+• `Optional` **dry**: boolean
 
-*Defined in [index.ts:31](https://github.com/google/semantic-release-replace-plugin/blob/master/src/index.ts#L31)*
+*Defined in [index.ts:52](https://github.com/Borduhh/semantic-release-replace-plugin/blob/d2e8b02/src/index.ts#L52)*
+
+___
+
+### encoding
+
+• `Optional` **encoding**: string
+
+*Defined in [index.ts:51](https://github.com/Borduhh/semantic-release-replace-plugin/blob/d2e8b02/src/index.ts#L51)*
+
+___
+
+### files
+
+•  **files**: string[]
+
+*Defined in [index.ts:31](https://github.com/Borduhh/semantic-release-replace-plugin/blob/d2e8b02/src/index.ts#L31)*
 
 files to search for replacements
 
 ___
 
-###  from
+### from
 
-• **from**: *string*
+•  **from**: string
 
-*Defined in [index.ts:37](https://github.com/google/semantic-release-replace-plugin/blob/master/src/index.ts#L37)*
+*Defined in [index.ts:37](https://github.com/Borduhh/semantic-release-replace-plugin/blob/d2e8b02/src/index.ts#L37)*
 
 The RegExp pattern to use to match.
 
@@ -88,30 +90,30 @@ Uses `String.replace(new RegExp(s, 'g'), to)` for implementation.
 
 ___
 
-### `Optional` ignore
+### ignore
 
-• **ignore**? : *string[]*
+• `Optional` **ignore**: string[]
 
-*Defined in [index.ts:47](https://github.com/google/semantic-release-replace-plugin/blob/master/src/index.ts#L47)*
+*Defined in [index.ts:47](https://github.com/Borduhh/semantic-release-replace-plugin/blob/d2e8b02/src/index.ts#L47)*
 
 ___
 
-### `Optional` results
+### results
 
-• **results**? : *object[]*
+• `Optional` **results**: { file: string ; hasChanged: boolean ; numMatches?: number ; numReplacements?: number  }[]
 
-*Defined in [index.ts:57](https://github.com/google/semantic-release-replace-plugin/blob/master/src/index.ts#L57)*
+*Defined in [index.ts:57](https://github.com/Borduhh/semantic-release-replace-plugin/blob/d2e8b02/src/index.ts#L57)*
 
 The results array can be passed to ensure that the expected replacements
 have been made, and if not, throw and exception with the diff.
 
 ___
 
-###  to
+### to
 
-• **to**: *string*
+•  **to**: string
 
-*Defined in [index.ts:46](https://github.com/google/semantic-release-replace-plugin/blob/master/src/index.ts#L46)*
+*Defined in [index.ts:46](https://github.com/Borduhh/semantic-release-replace-plugin/blob/d2e8b02/src/index.ts#L46)*
 
 The replacement value using a template of variables.
 

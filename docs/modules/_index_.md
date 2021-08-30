@@ -1,4 +1,6 @@
-[@google/semantic-release-replace-plugin](../README.md) › ["index"](_index_.md)
+**[@google/semantic-release-replace-plugin](../README.md)**
+
+> [Globals](../README.md) / "index"
 
 # Module: "index"
 
@@ -15,17 +17,17 @@
 
 ## Functions
 
-###  prepare
+### prepare
 
-▸ **prepare**(`PluginConfig`: [PluginConfig](../interfaces/_index_.pluginconfig.md), `context`: Context): *Promise‹void›*
+▸ **prepare**(`PluginConfig`: [PluginConfig](../interfaces/_index_.pluginconfig.md), `context`: Context): Promise<void\>
 
-*Defined in [index.ts:96](https://github.com/google/semantic-release-replace-plugin/blob/master/src/index.ts#L96)*
+*Defined in [index.ts:96](https://github.com/Borduhh/semantic-release-replace-plugin/blob/d2e8b02/src/index.ts#L96)*
 
-**Parameters:**
+#### Parameters:
 
 Name | Type |
 ------ | ------ |
 `PluginConfig` | [PluginConfig](../interfaces/_index_.pluginconfig.md) |
 `context` | Context |
 
-**Returns:** *Promise‹void›*
+**Returns:** Promise<void\>

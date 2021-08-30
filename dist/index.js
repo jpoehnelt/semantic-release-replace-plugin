@@ -65,8 +65,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 exports.__esModule = true;
+exports.prepare = void 0;
+var replace_in_file_1 = require("replace-in-file");
 var lodash_1 = require("lodash");
-var replace_in_file_1 = __importDefault(require("replace-in-file"));
 var jest_diff_1 = __importDefault(require("jest-diff"));
 function prepare(PluginConfig, context) {
     return __awaiter(this, void 0, void 0, function () {
@@ -82,16 +83,19 @@ function prepare(PluginConfig, context) {
                     results = replacement.results;
                     delete replacement.results;
                     replaceInFileConfig = replacement;
-                    replaceInFileConfig.to = lodash_1.template(replacement.to)(__assign({}, context));
-                    replaceInFileConfig.from = new RegExp(replacement.from, "g");
-                    return [4 /*yield*/, replace_in_file_1["default"](replaceInFileConfig)];
+                    replaceInFileConfig.to =
+                        typeof replacement.to === "function"
+                            ? replacement.to
+                            : lodash_1.template(replacement.to)(__assign({}, context));
+                    replaceInFileConfig.from = new RegExp(replacement.from, "gm");
+                    return [4 /*yield*/, replace_in_file_1.replaceInFile(replaceInFileConfig)];
                 case 2:
                     actual = _b.sent();
                     if (results) {
                         results = results.sort();
                         actual = actual.sort();
                         if (!lodash_1.isEqual(actual.sort(), results.sort())) {
-                            throw new Error("Results differed from actual! \n" + jest_diff_1["default"](results, actual));
+                            throw new Error("Expected match not found!\n" + jest_diff_1["default"](actual, results));
                         }
                     }
                     _b.label = 3;
