@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-import { ReplaceInFileConfig, replaceInFile } from 'replace-in-file';
-import { isEqual, template } from 'lodash';
+import { ReplaceInFileConfig, replaceInFile } from "replace-in-file";
+import { isEqual, template } from "lodash";
 
-import { Context } from 'semantic-release';
-import diffDefault from 'jest-diff';
+import { Context } from "semantic-release";
+import diffDefault from "jest-diff";
 
 /**
  * Replacement is simlar to the interface used by https://www.npmjs.com/package/replace-in-file
@@ -101,7 +101,10 @@ export interface PluginConfig {
   replacements: Replacement[];
 }
 
-export async function prepare(PluginConfig: PluginConfig, context: Context): Promise<void> {
+export async function prepare(
+  PluginConfig: PluginConfig,
+  context: Context
+): Promise<void> {
   for (const replacement of PluginConfig.replacements) {
     let { results } = replacement;
 
@@ -110,10 +113,10 @@ export async function prepare(PluginConfig: PluginConfig, context: Context): Pro
     const replaceInFileConfig = replacement as ReplaceInFileConfig;
 
     replaceInFileConfig.to =
-      typeof replacement.to === 'function'
+      typeof replacement.to === "function"
         ? replacement.to
         : template(replacement.to)({ ...context });
-    replaceInFileConfig.from = new RegExp(replacement.from, 'gm');
+    replaceInFileConfig.from = new RegExp(replacement.from, "gm");
 
     let actual = await replaceInFile(replaceInFileConfig);
 
@@ -122,7 +125,9 @@ export async function prepare(PluginConfig: PluginConfig, context: Context): Pro
       actual = actual.sort();
 
       if (!isEqual(actual.sort(), results.sort())) {
-        throw new Error(`Expected match not found!\n${diffDefault(actual, results)}`);
+        throw new Error(
+          `Expected match not found!\n${diffDefault(actual, results)}`
+        );
       }
     }
   }
