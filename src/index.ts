@@ -42,8 +42,16 @@ export interface Replacement {
    *
    * The context object is used to render the template. Additional values
    * can be found at: https://semantic-release.gitbook.io/semantic-release/developer-guide/js-api#result
+   *
+   * For advanced replacement (NOTE: only for use with `release.config.js` file version), pass in a function to replace non-standard variables
+   * ```
+   * {
+   *    from: `__VERSION__ = 11`, // eslint-disable-line
+   *    to: (matched) => `__VERSION: ${parseInt(matched.split('=')[1].trim()) + 1}`, // eslint-disable-line
+   *  },
+   * ```
    */
-  to: string;
+  to: string | ((a: string) => string);
   ignore?: string[];
   allowEmptyPaths?: boolean;
   countMatches?: boolean;
@@ -104,7 +112,10 @@ export async function prepare(
 
     const replaceInFileConfig = replacement as ReplaceInFileConfig;
 
-    replaceInFileConfig.to = template(replacement.to)({ ...context });
+    replaceInFileConfig.to =
+      typeof replacement.to === "function"
+        ? replacement.to
+        : template(replacement.to)({ ...context });
     replaceInFileConfig.from = new RegExp(replacement.from, "gm");
 
     let actual = await replaceInFile(replaceInFileConfig);

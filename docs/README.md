@@ -1,4 +1,6 @@
-[@google/semantic-release-replace-plugin](README.md)
+**[@google/semantic-release-replace-plugin](README.md)**
+
+> Globals
 
 # @google/semantic-release-replace-plugin
 

@@ -171,3 +171,23 @@ test("replacements are global", async () => {
 
   // Will throw if results do not match
 });
+
+test("prepare should replace using function", async () => {
+  const replacements = [
+    {
+      files: [path.join(d.name, "/*.py")],
+      from: '__VERSION__ = ".*"',
+      to: (match) => `__VERSION__ = 2`,
+    },
+    {
+      files: [path.join(d.name, "/build.gradle")],
+      from: "version = '.*'",
+      to: (match) => "version = 2",
+    },
+  ];
+
+  await prepare({ replacements }, context);
+
+  await assertFileContentsContain("__init__.py", `__VERSION__ = 2`);
+  await assertFileContents("build.gradle", "version = 2");
+});

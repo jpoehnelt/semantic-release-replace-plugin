@@ -9,7 +9,7 @@
     "rules": {
       "eslint-comments/no-use": "off",
       "import/no-namespace": "off",
-      "no-unused-vars": "error",
+      "no-unused-vars": "off",
       "@typescript-eslint/no-unused-vars": "error",
       "@typescript-eslint/explicit-member-accessibility": ["error", {"accessibility": "no-public"}],
       "@typescript-eslint/array-type": "error",
