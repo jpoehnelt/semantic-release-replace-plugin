@@ -7,7 +7,7 @@
 ![GitHub contributors](https://img.shields.io/github/contributors/google/semantic-release-replace-plugin?color=green)
 [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
 
-The `@google/semantic-release-replace-plugin` plugin provides functionality to update version strings througout a project allowing semantic release to be used in many different languages and build processes.
+The `@google/semantic-release-replace-plugin` plugin provides functionality to update version strings throughout a project. This enables semantic release to be used in many different languages and build processes.
 
 Read more about [Semantic Release](https://semantic-release.gitbook.io/).
 
