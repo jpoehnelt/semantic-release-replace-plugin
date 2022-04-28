@@ -114,7 +114,7 @@ export async function prepare(
 
     replaceInFileConfig.to =
       typeof replacement.to === "function"
-        ? replacement.to
+        ? replacement.to.bind(context)
         : template(replacement.to)({ ...context });
     replaceInFileConfig.from = new RegExp(replacement.from, "gm");
 
