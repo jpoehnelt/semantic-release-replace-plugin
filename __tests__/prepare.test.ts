@@ -191,3 +191,38 @@ test("prepare should replace using function", async () => {
   await assertFileContentsContain("__init__.py", `__VERSION__ = 2`);
   await assertFileContents("build.gradle", "version = 2");
 });
+
+test("prepare accepts regular expressions for `from`", async () => {
+  const replacements = [
+    {
+      files: [path.join(d.name, "/foo.md")],
+      from: /yarn(.+?)@.*/g,
+      to: `yarn add foo@${context.nextRelease.version}`,
+    },
+  ];
+
+  await prepare({ replacements }, context);
+
+  await assertFileContentsContain("foo.md", "npm i foo@1.0.0");
+  await assertFileContentsContain("foo.md", "yarn add foo@2.0.0");
+});
+
+test("prepare accepts callback functions for `from`", async () => {
+  const replacements = [
+    {
+      files: [path.join(d.name, "/foo.md")],
+      from: (filename: string) => `${path.basename(filename, ".md")}@1.0.0`, // Equivalent to "foo@1.0.0"
+      to: `foo@${context.nextRelease.version}`,
+    },
+  ];
+
+  await prepare({ replacements }, context);
+
+  // As `from` ended up being a string after executing the function, only the
+  // first occurrence of `foo@1.0.0` in the file should have been replaced.
+  // Note that this is different behavior from the case where a string is
+  // passed directly to `from` (which the plugin implicitly turns into a global
+  // regular expression)
+  await assertFileContentsContain("foo.md", "npm i foo@2.0.0");
+  await assertFileContentsContain("foo.md", "yarn add foo@1.0.0");
+});

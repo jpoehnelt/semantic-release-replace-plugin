@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import { From } from "replace-in-file";
 import { Context } from "semantic-release";
 /**
  * Replacement is simlar to the interface used by https://www.npmjs.com/package/replace-in-file
@@ -26,9 +27,16 @@ export interface Replacement {
     /**
      * The RegExp pattern to use to match.
      *
-     * Uses `String.replace(new RegExp(s, 'g'), to)` for implementation.
+     * Uses `String.replace(new RegExp(s, 'gm'), to)` for implementation, if
+     * `from` is a string.
+     *
+     * For advanced matching, i.e. when using a `release.config.js` file, consult
+     * the documentation of the `replace-in-file` package
+     * (https://github.com/adamreisnz/replace-in-file/blob/main/README.md) on its
+     * `from` option. This allows explicit specification of `RegExp`s, callback
+     * functions, etc.
      */
-    from: string;
+    from: From;
     /**
      * The replacement value using a template of variables.
      *

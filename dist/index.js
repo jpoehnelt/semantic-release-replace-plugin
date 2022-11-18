@@ -87,7 +87,15 @@ function prepare(PluginConfig, context) {
                         typeof replacement.to === "function"
                             ? replacement.to
                             : lodash_1.template(replacement.to)(__assign({}, context));
-                    replaceInFileConfig.from = new RegExp(replacement.from, "gm");
+                    // The `replace-in-file` package uses `String.replace` under the hood for
+                    // the actual replacement. If `from` is a string, this means only a
+                    // single occurence will be replaced. This plugin intents to replace
+                    // _all_ occurrences when given a string to better support
+                    // configuration through JSON, this requires conversion into a `RegExp`
+                    replaceInFileConfig.from =
+                        typeof replacement.from === "string"
+                            ? new RegExp(replacement.from, "gm")
+                            : replacement.from;
                     return [4 /*yield*/, replace_in_file_1.replaceInFile(replaceInFileConfig)];
                 case 2:
                     actual = _b.sent();

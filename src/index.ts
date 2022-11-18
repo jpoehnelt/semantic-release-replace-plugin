@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { ReplaceInFileConfig, replaceInFile } from "replace-in-file";
+import { ReplaceInFileConfig, From, replaceInFile } from "replace-in-file";
 import { isEqual, template } from "lodash";
 
 import { Context } from "semantic-release";
@@ -32,9 +32,16 @@ export interface Replacement {
   /**
    * The RegExp pattern to use to match.
    *
-   * Uses `String.replace(new RegExp(s, 'g'), to)` for implementation.
+   * Uses `String.replace(new RegExp(s, 'gm'), to)` for implementation, if
+   * `from` is a string.
+   *
+   * For advanced matching, i.e. when using a `release.config.js` file, consult
+   * the documentation of the `replace-in-file` package
+   * (https://github.com/adamreisnz/replace-in-file/blob/main/README.md) on its
+   * `from` option. This allows explicit specification of `RegExp`s, callback
+   * functions, etc.
    */
-  from: string;
+  from: From;
   /**
    * The replacement value using a template of variables.
    *
@@ -116,7 +123,16 @@ export async function prepare(
       typeof replacement.to === "function"
         ? replacement.to
         : template(replacement.to)({ ...context });
-    replaceInFileConfig.from = new RegExp(replacement.from, "gm");
+
+    // The `replace-in-file` package uses `String.replace` under the hood for
+    // the actual replacement. If `from` is a string, this means only a
+    // single occurence will be replaced. This plugin intents to replace
+    // _all_ occurrences when given a string to better support
+    // configuration through JSON, this requires conversion into a `RegExp`
+    replaceInFileConfig.from =
+      typeof replacement.from === "string"
+        ? new RegExp(replacement.from, "gm")
+        : replacement.from;
 
     let actual = await replaceInFile(replaceInFileConfig);
 
