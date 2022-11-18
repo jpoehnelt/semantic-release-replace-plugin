@@ -52,8 +52,14 @@ export interface Replacement {
      *    to: (matched) => `__VERSION: ${parseInt(matched.split('=')[1].trim()) + 1}`, // eslint-disable-line
      *  },
      * ```
+     *
+     * The `args` for a callback function can take a variety of shapes. In its
+     * simplest form, e.g. if `from` is a string, it's the filename in which the
+     * replacement is done. If `from` is a regular expression the `args` of the
+     * callback include captures, the offset of the matched string, the matched
+     * string, etc. See the `String.replace` documentation for details
      */
-    to: string | ((a: string) => string);
+    to: string | ((match: string, ...args: unknown[]) => string);
     ignore?: string[];
     allowEmptyPaths?: boolean;
     countMatches?: boolean;

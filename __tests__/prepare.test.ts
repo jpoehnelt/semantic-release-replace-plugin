@@ -226,3 +226,22 @@ test("prepare accepts callback functions for `from`", async () => {
   await assertFileContentsContain("foo.md", "npm i foo@2.0.0");
   await assertFileContentsContain("foo.md", "yarn add foo@1.0.0");
 });
+
+test("prepare accepts multi-argument `to` callback functions for regular expression `from`", async () => {
+  const replacements = [
+    {
+      files: [path.join(d.name, "/foo.md")],
+      from: /npm i (.+)@(.+)`/g,
+      to: (match: string, package_name: string, version: string) => {
+        return match
+          .replace(version, context.nextRelease.version)
+          .replace(package_name, package_name.split("").reverse().join(""));
+      },
+    },
+  ];
+
+  await prepare({ replacements }, context);
+
+  await assertFileContentsContain("foo.md", "npm i oof@2.0.0");
+  await assertFileContentsContain("foo.md", "yarn add foo@1.0.0");
+});

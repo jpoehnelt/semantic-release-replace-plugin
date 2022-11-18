@@ -32,7 +32,7 @@ with the difference being the single string for `to` and `from`.
 
 • `Optional` **allowEmptyPaths**: boolean
 
-*Defined in [index.ts:63](https://github.com/google/semantic-release-replace-plugin/blob/eefac95/src/index.ts#L63)*
+*Defined in [index.ts:69](https://github.com/google/semantic-release-replace-plugin/blob/f8aec3c/src/index.ts#L69)*
 
 ___
 
@@ -40,7 +40,7 @@ ___
 
 • `Optional` **countMatches**: boolean
 
-*Defined in [index.ts:64](https://github.com/google/semantic-release-replace-plugin/blob/eefac95/src/index.ts#L64)*
+*Defined in [index.ts:70](https://github.com/google/semantic-release-replace-plugin/blob/f8aec3c/src/index.ts#L70)*
 
 ___
 
@@ -48,7 +48,7 @@ ___
 
 • `Optional` **disableGlobs**: boolean
 
-*Defined in [index.ts:65](https://github.com/google/semantic-release-replace-plugin/blob/eefac95/src/index.ts#L65)*
+*Defined in [index.ts:71](https://github.com/google/semantic-release-replace-plugin/blob/f8aec3c/src/index.ts#L71)*
 
 ___
 
@@ -56,7 +56,7 @@ ___
 
 • `Optional` **dry**: boolean
 
-*Defined in [index.ts:67](https://github.com/google/semantic-release-replace-plugin/blob/eefac95/src/index.ts#L67)*
+*Defined in [index.ts:73](https://github.com/google/semantic-release-replace-plugin/blob/f8aec3c/src/index.ts#L73)*
 
 ___
 
@@ -64,7 +64,7 @@ ___
 
 • `Optional` **encoding**: string
 
-*Defined in [index.ts:66](https://github.com/google/semantic-release-replace-plugin/blob/eefac95/src/index.ts#L66)*
+*Defined in [index.ts:72](https://github.com/google/semantic-release-replace-plugin/blob/f8aec3c/src/index.ts#L72)*
 
 ___
 
@@ -101,7 +101,7 @@ ___
 
 • `Optional` **ignore**: string[]
 
-*Defined in [index.ts:62](https://github.com/google/semantic-release-replace-plugin/blob/eefac95/src/index.ts#L62)*
+*Defined in [index.ts:68](https://github.com/google/semantic-release-replace-plugin/blob/f8aec3c/src/index.ts#L68)*
 
 ___
 
@@ -109,7 +109,7 @@ ___
 
 • `Optional` **results**: { file: string ; hasChanged: boolean ; numMatches?: number ; numReplacements?: number  }[]
 
-*Defined in [index.ts:72](https://github.com/google/semantic-release-replace-plugin/blob/eefac95/src/index.ts#L72)*
+*Defined in [index.ts:78](https://github.com/google/semantic-release-replace-plugin/blob/f8aec3c/src/index.ts#L78)*
 
 The results array can be passed to ensure that the expected replacements
 have been made, and if not, throw and exception with the diff.
@@ -118,9 +118,9 @@ ___
 
 ### to
 
-•  **to**: string \| (a: string) => string
+•  **to**: string \| (match: string, ...args: unknown[]) => string
 
-*Defined in [index.ts:61](https://github.com/google/semantic-release-replace-plugin/blob/eefac95/src/index.ts#L61)*
+*Defined in [index.ts:67](https://github.com/google/semantic-release-replace-plugin/blob/f8aec3c/src/index.ts#L67)*
 
 The replacement value using a template of variables.
 
@@ -136,3 +136,9 @@ For advanced replacement (NOTE: only for use with `release.config.js` file versi
    to: (matched) => `__VERSION: ${parseInt(matched.split('=')[1].trim()) + 1}`, // eslint-disable-line
  },
 ```
+
+The `args` for a callback function can take a variety of shapes. In its
+simplest form, e.g. if `from` is a string, it's the filename in which the
+replacement is done. If `from` is a regular expression the `args` of the
+callback include captures, the offset of the matched string, the matched
+string, etc. See the `String.replace` documentation for details
