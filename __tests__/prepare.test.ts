@@ -55,7 +55,7 @@ async function assertFileContents(name: string, expected: string) {
 
 async function assertFileContentsContain(name: string, expected: string) {
   const actual = await fs.readFileSync(path.join(d.name, name), "utf-8");
-  expect.stringContaining(expected);
+  expect(actual).toEqual(expect.stringContaining(expected));
 }
 
 test("prepare should replace using regex", async () => {
