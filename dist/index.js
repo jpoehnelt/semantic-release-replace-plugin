@@ -73,7 +73,7 @@ var jest_diff_1 = __importDefault(require("jest-diff"));
  * Wraps the `callback` in a new function that passes the `context` as the
  * final argument to the `callback` when it gets called.
  */
-function applyContextTo(callback, context) {
+function applyContextToCallback(callback, context) {
     return function () {
         var args = [];
         for (var _i = 0; _i < arguments.length; _i++) {
@@ -81,6 +81,15 @@ function applyContextTo(callback, context) {
         }
         return callback.apply(null, args.concat(context));
     };
+}
+/**
+ * Applies the `context` to the replacement property `to` depending on whether
+ * it is a string template or a callback function.
+ */
+function applyContextToReplacement(to, context) {
+    return typeof to === "function"
+        ? applyContextToCallback(to, context)
+        : lodash_1.template(to)(__assign({}, context));
 }
 /**
  * Normalizes a `value` into an array, making it more straightforward to apply
@@ -118,7 +127,7 @@ function prepare(PluginConfig, context) {
                     replaceInFileConfig.from = normalizeToArray(replacement.from).map(function (from) {
                         switch (typeof from) {
                             case "function":
-                                return applyContextTo(from, context);
+                                return applyContextToCallback(from, context);
                             case "string":
                                 return new RegExp(from, "gm");
                             default:
@@ -126,9 +135,9 @@ function prepare(PluginConfig, context) {
                         }
                     });
                     replaceInFileConfig.to =
-                        typeof replacement.to === "function"
-                            ? applyContextTo(replacement.to, context)
-                            : lodash_1.template(replacement.to)(__assign({}, context));
+                        replacement.to instanceof Array
+                            ? replacement.to.map(function (to) { return applyContextToReplacement(to, context); })
+                            : applyContextToReplacement(replacement.to, context);
                     return [4 /*yield*/, replace_in_file_1.replaceInFile(replaceInFileConfig)];
                 case 2:
                     actual = _b.sent();

@@ -20,10 +20,12 @@ import { isEqual, template } from "lodash";
 import { Context } from "semantic-release";
 import diffDefault from "jest-diff";
 
-// Redefine `replace-in-file` config's `From` type for its callback variant to
-// be compatible with passing in the `semantic-release` `Context`.
+// Redefine `replace-in-file` config's `From` and `To` types for their callback
+// variants to be compatible with passing in the `semantic-release` `Context`.
 type From = FromCallback | RegExp | string;
 type FromCallback = (filename: string, ...args: unknown[]) => RegExp | string;
+type To = string | ToCallback;
+type ToCallback = (match: string, ...args: unknown[]) => string;
 
 /**
  * Replacement is simlar to the interface used by https://www.npmjs.com/package/replace-in-file
@@ -71,8 +73,12 @@ export interface Replacement {
    * replacement is done. If `from` is a regular expression the `args` of the
    * callback include captures, the offset of the matched string, the matched
    * string, etc. See the `String.replace` documentation for details
+   *
+   * Multiple replacements may be specified as an array. These can be either
+   * strings or callback functions. Note that the amount of replacements needs
+   * to match the amount of `from` matchers.
    */
-  to: string | ((match: string, ...args: unknown[]) => string);
+  to: To | To[];
   ignore?: string[];
   allowEmptyPaths?: boolean;
   countMatches?: boolean;
@@ -126,8 +132,18 @@ export interface PluginConfig {
  * Wraps the `callback` in a new function that passes the `context` as the
  * final argument to the `callback` when it gets called.
  */
-function applyContextTo(callback: Function, context: Context) {
+function applyContextToCallback(callback: Function, context: Context) {
   return (...args: unknown[]) => callback.apply(null, args.concat(context));
+}
+
+/**
+ * Applies the `context` to the replacement property `to` depending on whether
+ * it is a string template or a callback function.
+ */
+function applyContextToReplacement(to: To, context: Context): To {
+  return typeof to === "function"
+    ? applyContextToCallback(to, context)
+    : template(to)({ ...context });
 }
 
 /**
@@ -165,7 +181,7 @@ export async function prepare(
       (from) => {
         switch (typeof from) {
           case "function":
-            return applyContextTo(from, context);
+            return applyContextToCallback(from, context);
           case "string":
             return new RegExp(from, "gm");
           default:
@@ -175,9 +191,9 @@ export async function prepare(
     );
 
     replaceInFileConfig.to =
-      typeof replacement.to === "function"
-        ? applyContextTo(replacement.to, context)
-        : template(replacement.to)({ ...context });
+      replacement.to instanceof Array
+        ? replacement.to.map((to) => applyContextToReplacement(to, context))
+        : applyContextToReplacement(replacement.to, context);
 
     let actual = await replaceInFile(replaceInFileConfig);
 

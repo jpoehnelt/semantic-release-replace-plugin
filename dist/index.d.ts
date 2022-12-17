@@ -16,6 +16,8 @@
 import { Context } from "semantic-release";
 declare type From = FromCallback | RegExp | string;
 declare type FromCallback = (filename: string, ...args: unknown[]) => RegExp | string;
+declare type To = string | ToCallback;
+declare type ToCallback = (match: string, ...args: unknown[]) => string;
 /**
  * Replacement is simlar to the interface used by https://www.npmjs.com/package/replace-in-file
  * with the difference being the single string for `to` and `from`.
@@ -62,8 +64,12 @@ export interface Replacement {
      * replacement is done. If `from` is a regular expression the `args` of the
      * callback include captures, the offset of the matched string, the matched
      * string, etc. See the `String.replace` documentation for details
+     *
+     * Multiple replacements may be specified as an array. These can be either
+     * strings or callback functions. Note that the amount of replacements needs
+     * to match the amount of `from` matchers.
      */
-    to: string | ((match: string, ...args: unknown[]) => string);
+    to: To | To[];
     ignore?: string[];
     allowEmptyPaths?: boolean;
     countMatches?: boolean;

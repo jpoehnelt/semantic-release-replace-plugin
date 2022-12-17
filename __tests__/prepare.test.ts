@@ -315,3 +315,33 @@ test("prepare accepts an array of `from` matchers", async () => {
   await assertFileContentsContain("foo.md", "bar `npm i bar@bar`");
   await assertFileContentsContain("foo.md", "install with `yarn add foo@bar`");
 });
+
+test("prepare accepts an array of `to` replacements", async () => {
+  // This replaces `npm i` with `npm install` and all occurrences of `1.0.0`
+  // with the `version` of the `nextRelease` as string `from` matchers are
+  // turned into global regular expressions
+  const replacements = [
+    {
+      files: [path.join(d.name, "/foo.md")],
+      from: ["npm i", "1.0.0"],
+      to: [
+        "npm install",
+        (...args: unknown[]) => {
+          const context = args.pop() as Context;
+          return context?.nextRelease?.version || "";
+        },
+      ],
+    },
+  ];
+
+  await prepare({ replacements }, context);
+
+  await assertFileContentsContain(
+    "foo.md",
+    `npm install foo@${context.nextRelease.version}`
+  );
+  await assertFileContentsContain(
+    "foo.md",
+    `yarn add foo@${context.nextRelease.version}`
+  );
+});
