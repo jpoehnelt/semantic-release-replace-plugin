@@ -138,11 +138,6 @@ export async function prepare(
 
     const replaceInFileConfig = replacement as ReplaceInFileConfig;
 
-    replaceInFileConfig.to =
-      typeof replacement.to === "function"
-        ? replacement.to
-        : template(replacement.to)({ ...context });
-
     // The `replace-in-file` package uses `String.replace` under the hood for
     // the actual replacement. If `from` is a string, this means only a
     // single occurence will be replaced. This plugin intents to replace
@@ -157,6 +152,11 @@ export async function prepare(
     } else if (typeof replacement.from === "function") {
       replaceInFileConfig.from = applyContextTo(replacement.from, context);
     }
+
+    replaceInFileConfig.to =
+      typeof replacement.to === "function"
+        ? applyContextTo(replacement.to, context)
+        : template(replacement.to)({ ...context });
 
     let actual = await replaceInFile(replaceInFileConfig);
 

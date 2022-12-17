@@ -269,3 +269,26 @@ test("prepare passes the `context` as the final function argument to `from` call
   await assertFileContentsContain("foo.md", "npm i foo@3.0.0");
   await assertFileContentsContain("foo.md", "yarn add foo@3.0.0");
 });
+
+test("prepare passes the `context` as the final function argument to `to` callbacks", async () => {
+  const replacements = [
+    {
+      files: [path.join(d.name, "/foo.md")],
+      from: /npm i (.*)@(.*)`/,
+      to: (_: string, package_name: string, ...args: unknown[]) => {
+        let reversed_package_name = package_name.split("").reverse().join("");
+        let context = args.pop() as Context;
+
+        return `npm i ${reversed_package_name}@${context?.nextRelease?.version}`;
+      },
+    },
+  ];
+
+  await prepare({ replacements }, context);
+
+  await assertFileContentsContain(
+    "foo.md",
+    `npm i oof@${context.nextRelease.version}`
+  );
+  await assertFileContentsContain("foo.md", "yarn add foo@1.0.0");
+});

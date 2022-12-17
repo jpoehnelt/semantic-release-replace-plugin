@@ -96,10 +96,6 @@ function prepare(PluginConfig, context) {
                     results = replacement.results;
                     delete replacement.results;
                     replaceInFileConfig = replacement;
-                    replaceInFileConfig.to =
-                        typeof replacement.to === "function"
-                            ? replacement.to
-                            : lodash_1.template(replacement.to)(__assign({}, context));
                     // The `replace-in-file` package uses `String.replace` under the hood for
                     // the actual replacement. If `from` is a string, this means only a
                     // single occurence will be replaced. This plugin intents to replace
@@ -115,6 +111,10 @@ function prepare(PluginConfig, context) {
                     else if (typeof replacement.from === "function") {
                         replaceInFileConfig.from = applyContextTo(replacement.from, context);
                     }
+                    replaceInFileConfig.to =
+                        typeof replacement.to === "function"
+                            ? applyContextTo(replacement.to, context)
+                            : lodash_1.template(replacement.to)(__assign({}, context));
                     return [4 /*yield*/, replace_in_file_1.replaceInFile(replaceInFileConfig)];
                 case 2:
                     actual = _b.sent();
