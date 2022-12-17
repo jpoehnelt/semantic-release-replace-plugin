@@ -17,10 +17,16 @@
 import * as fs from "fs-extra";
 import * as path from "path";
 import * as tmp from "tmp";
+import { Context } from "semantic-release";
 
 import { prepare } from "../src/index";
 
 const context = {
+  lastRelease: {
+    gitHead: "asdfasdf",
+    gitTag: "v1.0.0",
+    version: "1.0.0",
+  },
   nextRelease: {
     type: "major" as const,
     gitTag: "2.0.0",
@@ -244,4 +250,22 @@ test("prepare accepts multi-argument `to` callback functions for regular express
 
   await assertFileContentsContain("foo.md", "npm i oof@2.0.0");
   await assertFileContentsContain("foo.md", "yarn add foo@1.0.0");
+});
+
+test("prepare passes the `context` as the final function argument to `from` callbacks", async () => {
+  const replacements = [
+    {
+      files: [path.join(d.name, "/foo.md")],
+      // Returns a regular expression matching the previous version, so that
+      // _all_ occurrences in the document are updated
+      from: (_: string, context: Context) =>
+        new RegExp(context?.lastRelease?.version || "", "g"),
+      to: "3.0.0",
+    },
+  ];
+
+  await prepare({ replacements }, context);
+
+  await assertFileContentsContain("foo.md", "npm i foo@3.0.0");
+  await assertFileContentsContain("foo.md", "yarn add foo@3.0.0");
 });

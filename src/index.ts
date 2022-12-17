@@ -14,11 +14,16 @@
  * limitations under the License.
  */
 
-import { ReplaceInFileConfig, From, replaceInFile } from "replace-in-file";
+import { ReplaceInFileConfig, replaceInFile } from "replace-in-file";
 import { isEqual, template } from "lodash";
 
 import { Context } from "semantic-release";
 import diffDefault from "jest-diff";
+
+// Redefine `replace-in-file` config's `From` type for its callback variant to
+// be compatible with passing in the `semantic-release` `Context`.
+type From = FromCallback | RegExp | string;
+type FromCallback = (filename: string, ...args: unknown[]) => RegExp | string;
 
 /**
  * Replacement is simlar to the interface used by https://www.npmjs.com/package/replace-in-file
@@ -114,6 +119,14 @@ export interface PluginConfig {
   replacements: Replacement[];
 }
 
+/**
+ * Wraps the `callback` in a new function that passes the `context` as the
+ * final argument to the `callback` when it gets called.
+ */
+function applyContextTo(callback: Function, context: Context) {
+  return (...args: unknown[]) => callback.apply(null, args.concat(context));
+}
+
 export async function prepare(
   PluginConfig: PluginConfig,
   context: Context
@@ -134,11 +147,16 @@ export async function prepare(
     // the actual replacement. If `from` is a string, this means only a
     // single occurence will be replaced. This plugin intents to replace
     // _all_ occurrences when given a string to better support
-    // configuration through JSON, this requires conversion into a `RegExp`
-    replaceInFileConfig.from =
-      typeof replacement.from === "string"
-        ? new RegExp(replacement.from, "gm")
-        : replacement.from;
+    // configuration through JSON, this requires conversion into a `RegExp`.
+    //
+    // If `from` is a callback function, the `context` is passed as the final
+    // parameter to the function. In all other cases, e.g. being a
+    // `RegExp`, the `from` property does not require any modifications
+    if (typeof replacement.from === "string") {
+      replaceInFileConfig.from = new RegExp(replacement.from, "gm");
+    } else if (typeof replacement.from === "function") {
+      replaceInFileConfig.from = applyContextTo(replacement.from, context);
+    }
 
     let actual = await replaceInFile(replaceInFileConfig);
 

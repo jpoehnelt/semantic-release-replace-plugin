@@ -13,8 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { From } from "replace-in-file";
 import { Context } from "semantic-release";
+declare type From = FromCallback | RegExp | string;
+declare type FromCallback = (filename: string, ...args: unknown[]) => RegExp | string;
 /**
  * Replacement is simlar to the interface used by https://www.npmjs.com/package/replace-in-file
  * with the difference being the single string for `to` and `from`.
@@ -109,3 +110,4 @@ export interface PluginConfig {
     replacements: Replacement[];
 }
 export declare function prepare(PluginConfig: PluginConfig, context: Context): Promise<void>;
+export {};

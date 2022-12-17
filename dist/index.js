@@ -69,6 +69,19 @@ exports.prepare = void 0;
 var replace_in_file_1 = require("replace-in-file");
 var lodash_1 = require("lodash");
 var jest_diff_1 = __importDefault(require("jest-diff"));
+/**
+ * Wraps the `callback` in a new function that passes the `context` as the
+ * final argument to the `callback` when it gets called.
+ */
+function applyContextTo(callback, context) {
+    return function () {
+        var args = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            args[_i] = arguments[_i];
+        }
+        return callback.apply(null, args.concat(context));
+    };
+}
 function prepare(PluginConfig, context) {
     return __awaiter(this, void 0, void 0, function () {
         var _i, _a, replacement, results, replaceInFileConfig, actual;
@@ -91,11 +104,17 @@ function prepare(PluginConfig, context) {
                     // the actual replacement. If `from` is a string, this means only a
                     // single occurence will be replaced. This plugin intents to replace
                     // _all_ occurrences when given a string to better support
-                    // configuration through JSON, this requires conversion into a `RegExp`
-                    replaceInFileConfig.from =
-                        typeof replacement.from === "string"
-                            ? new RegExp(replacement.from, "gm")
-                            : replacement.from;
+                    // configuration through JSON, this requires conversion into a `RegExp`.
+                    //
+                    // If `from` is a callback function, the `context` is passed as the final
+                    // parameter to the function. In all other cases, e.g. being a
+                    // `RegExp`, the `from` property does not require any modifications
+                    if (typeof replacement.from === "string") {
+                        replaceInFileConfig.from = new RegExp(replacement.from, "gm");
+                    }
+                    else if (typeof replacement.from === "function") {
+                        replaceInFileConfig.from = applyContextTo(replacement.from, context);
+                    }
                     return [4 /*yield*/, replace_in_file_1.replaceInFile(replaceInFileConfig)];
                 case 2:
                     actual = _b.sent();
