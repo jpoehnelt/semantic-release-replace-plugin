@@ -32,7 +32,7 @@ with the difference being the single string for `to` and `from`.
 
 • `Optional` **allowEmptyPaths**: boolean
 
-*Defined in [index.ts:74](https://github.com/google/semantic-release-replace-plugin/blob/1cdf9e4/src/index.ts#L74)*
+*Defined in [index.ts:77](https://github.com/google/semantic-release-replace-plugin/blob/997c65a/src/index.ts#L77)*
 
 ___
 
@@ -40,7 +40,7 @@ ___
 
 • `Optional` **countMatches**: boolean
 
-*Defined in [index.ts:75](https://github.com/google/semantic-release-replace-plugin/blob/1cdf9e4/src/index.ts#L75)*
+*Defined in [index.ts:78](https://github.com/google/semantic-release-replace-plugin/blob/997c65a/src/index.ts#L78)*
 
 ___
 
@@ -48,7 +48,7 @@ ___
 
 • `Optional` **disableGlobs**: boolean
 
-*Defined in [index.ts:76](https://github.com/google/semantic-release-replace-plugin/blob/1cdf9e4/src/index.ts#L76)*
+*Defined in [index.ts:79](https://github.com/google/semantic-release-replace-plugin/blob/997c65a/src/index.ts#L79)*
 
 ___
 
@@ -56,7 +56,7 @@ ___
 
 • `Optional` **dry**: boolean
 
-*Defined in [index.ts:78](https://github.com/google/semantic-release-replace-plugin/blob/1cdf9e4/src/index.ts#L78)*
+*Defined in [index.ts:81](https://github.com/google/semantic-release-replace-plugin/blob/997c65a/src/index.ts#L81)*
 
 ___
 
@@ -64,7 +64,7 @@ ___
 
 • `Optional` **encoding**: string
 
-*Defined in [index.ts:77](https://github.com/google/semantic-release-replace-plugin/blob/1cdf9e4/src/index.ts#L77)*
+*Defined in [index.ts:80](https://github.com/google/semantic-release-replace-plugin/blob/997c65a/src/index.ts#L80)*
 
 ___
 
@@ -80,9 +80,9 @@ ___
 
 ### from
 
-•  **from**: From
+•  **from**: From \| From[]
 
-*Defined in [index.ts:49](https://github.com/google/semantic-release-replace-plugin/blob/1cdf9e4/src/index.ts#L49)*
+*Defined in [index.ts:52](https://github.com/google/semantic-release-replace-plugin/blob/997c65a/src/index.ts#L52)*
 
 The RegExp pattern to use to match.
 
@@ -95,13 +95,16 @@ the documentation of the `replace-in-file` package
 `from` option. This allows explicit specification of `RegExp`s, callback
 functions, etc.
 
+Multiple matchers may be provided as an array, following the same
+conversion rules as mentioned above.
+
 ___
 
 ### ignore
 
 • `Optional` **ignore**: string[]
 
-*Defined in [index.ts:73](https://github.com/google/semantic-release-replace-plugin/blob/1cdf9e4/src/index.ts#L73)*
+*Defined in [index.ts:76](https://github.com/google/semantic-release-replace-plugin/blob/997c65a/src/index.ts#L76)*
 
 ___
 
@@ -109,7 +112,7 @@ ___
 
 • `Optional` **results**: { file: string ; hasChanged: boolean ; numMatches?: number ; numReplacements?: number  }[]
 
-*Defined in [index.ts:83](https://github.com/google/semantic-release-replace-plugin/blob/1cdf9e4/src/index.ts#L83)*
+*Defined in [index.ts:86](https://github.com/google/semantic-release-replace-plugin/blob/997c65a/src/index.ts#L86)*
 
 The results array can be passed to ensure that the expected replacements
 have been made, and if not, throw and exception with the diff.
@@ -120,7 +123,7 @@ ___
 
 •  **to**: string \| (match: string, ...args: unknown[]) => string
 
-*Defined in [index.ts:72](https://github.com/google/semantic-release-replace-plugin/blob/1cdf9e4/src/index.ts#L72)*
+*Defined in [index.ts:75](https://github.com/google/semantic-release-replace-plugin/blob/997c65a/src/index.ts#L75)*
 
 The replacement value using a template of variables.
 

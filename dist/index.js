@@ -82,6 +82,13 @@ function applyContextTo(callback, context) {
         return callback.apply(null, args.concat(context));
     };
 }
+/**
+ * Normalizes a `value` into an array, making it more straightforward to apply
+ * logic to a single value of type `T` or an array of those values.
+ */
+function normalizeToArray(value) {
+    return value instanceof Array ? value : [value];
+}
 function prepare(PluginConfig, context) {
     return __awaiter(this, void 0, void 0, function () {
         var _i, _a, replacement, results, replaceInFileConfig, actual;
@@ -104,13 +111,20 @@ function prepare(PluginConfig, context) {
                     //
                     // If `from` is a callback function, the `context` is passed as the final
                     // parameter to the function. In all other cases, e.g. being a
-                    // `RegExp`, the `from` property does not require any modifications
-                    if (typeof replacement.from === "string") {
-                        replaceInFileConfig.from = new RegExp(replacement.from, "gm");
-                    }
-                    else if (typeof replacement.from === "function") {
-                        replaceInFileConfig.from = applyContextTo(replacement.from, context);
-                    }
+                    // `RegExp`, the `from` property does not require any modifications.
+                    //
+                    // The `from` property may either be a single value to match or an array of
+                    // values (in any of the previously described forms)
+                    replaceInFileConfig.from = normalizeToArray(replacement.from).map(function (from) {
+                        switch (typeof from) {
+                            case "function":
+                                return applyContextTo(from, context);
+                            case "string":
+                                return new RegExp(from, "gm");
+                            default:
+                                return from;
+                        }
+                    });
                     replaceInFileConfig.to =
                         typeof replacement.to === "function"
                             ? applyContextTo(replacement.to, context)

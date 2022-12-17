@@ -292,3 +292,26 @@ test("prepare passes the `context` as the final function argument to `to` callba
   );
   await assertFileContentsContain("foo.md", "yarn add foo@1.0.0");
 });
+
+test("prepare accepts an array of `from` matchers", async () => {
+  const replacements = [
+    {
+      files: [path.join(d.name, "/foo.md")],
+      // Similarly to single string values, strings in arrays should be taken
+      // to mean global replacements for improved JSON configuration
+      // capabilities. The regular expression and function matchers should only
+      // replace a single occurrence and hence only affect the `npm` line
+      from: [
+        "1.0.0",
+        /install with/,
+        (filename: string) => path.basename(filename, ".md"),
+      ],
+      to: "bar",
+    },
+  ];
+
+  await prepare({ replacements }, context);
+
+  await assertFileContentsContain("foo.md", "bar `npm i bar@bar`");
+  await assertFileContentsContain("foo.md", "install with `yarn add foo@bar`");
+});

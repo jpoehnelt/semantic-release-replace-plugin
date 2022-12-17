@@ -21,7 +21,7 @@
 
 ▸ **prepare**(`PluginConfig`: [PluginConfig](../interfaces/_index_.pluginconfig.md), `context`: Context): Promise<void\>
 
-*Defined in [index.ts:130](https://github.com/google/semantic-release-replace-plugin/blob/1cdf9e4/src/index.ts#L130)*
+*Defined in [index.ts:141](https://github.com/google/semantic-release-replace-plugin/blob/997c65a/src/index.ts#L141)*
 
 #### Parameters:
 

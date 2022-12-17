@@ -45,8 +45,11 @@ export interface Replacement {
    * (https://github.com/adamreisnz/replace-in-file/blob/main/README.md) on its
    * `from` option. This allows explicit specification of `RegExp`s, callback
    * functions, etc.
+   *
+   * Multiple matchers may be provided as an array, following the same
+   * conversion rules as mentioned above.
    */
-  from: From;
+  from: From | From[];
   /**
    * The replacement value using a template of variables.
    *
@@ -127,6 +130,14 @@ function applyContextTo(callback: Function, context: Context) {
   return (...args: unknown[]) => callback.apply(null, args.concat(context));
 }
 
+/**
+ * Normalizes a `value` into an array, making it more straightforward to apply
+ * logic to a single value of type `T` or an array of those values.
+ */
+function normalizeToArray<T>(value: T | T[]): T[] {
+  return value instanceof Array ? value : [value];
+}
+
 export async function prepare(
   PluginConfig: PluginConfig,
   context: Context
@@ -146,12 +157,22 @@ export async function prepare(
     //
     // If `from` is a callback function, the `context` is passed as the final
     // parameter to the function. In all other cases, e.g. being a
-    // `RegExp`, the `from` property does not require any modifications
-    if (typeof replacement.from === "string") {
-      replaceInFileConfig.from = new RegExp(replacement.from, "gm");
-    } else if (typeof replacement.from === "function") {
-      replaceInFileConfig.from = applyContextTo(replacement.from, context);
-    }
+    // `RegExp`, the `from` property does not require any modifications.
+    //
+    // The `from` property may either be a single value to match or an array of
+    // values (in any of the previously described forms)
+    replaceInFileConfig.from = normalizeToArray(replacement.from).map(
+      (from) => {
+        switch (typeof from) {
+          case "function":
+            return applyContextTo(from, context);
+          case "string":
+            return new RegExp(from, "gm");
+          default:
+            return from;
+        }
+      }
+    );
 
     replaceInFileConfig.to =
       typeof replacement.to === "function"

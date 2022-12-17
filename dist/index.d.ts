@@ -36,8 +36,11 @@ export interface Replacement {
      * (https://github.com/adamreisnz/replace-in-file/blob/main/README.md) on its
      * `from` option. This allows explicit specification of `RegExp`s, callback
      * functions, etc.
+     *
+     * Multiple matchers may be provided as an array, following the same
+     * conversion rules as mentioned above.
      */
-    from: From;
+    from: From | From[];
     /**
      * The replacement value using a template of variables.
      *
