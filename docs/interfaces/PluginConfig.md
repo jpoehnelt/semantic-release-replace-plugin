@@ -1,6 +1,4 @@
-**[@google/semantic-release-replace-plugin](../README.md)**
-
-> [Globals](../README.md) / ["index"](../modules/_index_.md) / PluginConfig
+[@google/semantic-release-replace-plugin](../README.md) / PluginConfig
 
 # Interface: PluginConfig
 
@@ -30,22 +28,20 @@ PluginConfig is used to provide multiple replacement.
 ]
 ```
 
-## Hierarchy
-
-* **PluginConfig**
-
-## Index
+## Table of contents
 
 ### Properties
 
-* [replacements](_index_.pluginconfig.md#replacements)
+- [replacements](PluginConfig.md#replacements)
 
 ## Properties
 
 ### replacements
 
-•  **replacements**: [Replacement](_index_.replacement.md)[]
-
-*Defined in [index.ts:128](https://github.com/google/semantic-release-replace-plugin/blob/f749696/src/index.ts#L128)*
+• **replacements**: [`Replacement`](Replacement.md)[]
 
 An array of replacements to be made.
+
+#### Defined in
+
+[index.ts:128](https://github.com/google/semantic-release-replace-plugin/blob/1579d05/src/index.ts#L128)

@@ -1,88 +1,92 @@
-**[@google/semantic-release-replace-plugin](../README.md)**
-
-> [Globals](../README.md) / ["index"](../modules/_index_.md) / Replacement
+[@google/semantic-release-replace-plugin](../README.md) / Replacement
 
 # Interface: Replacement
 
 Replacement is similar to the interface used by https://www.npmjs.com/package/replace-in-file
 with the difference being the single string for `to` and `from`.
 
-## Hierarchy
-
-* **Replacement**
-
-## Index
+## Table of contents
 
 ### Properties
 
-* [allowEmptyPaths](_index_.replacement.md#allowemptypaths)
-* [countMatches](_index_.replacement.md#countmatches)
-* [disableGlobs](_index_.replacement.md#disableglobs)
-* [dry](_index_.replacement.md#dry)
-* [encoding](_index_.replacement.md#encoding)
-* [files](_index_.replacement.md#files)
-* [from](_index_.replacement.md#from)
-* [ignore](_index_.replacement.md#ignore)
-* [results](_index_.replacement.md#results)
-* [to](_index_.replacement.md#to)
+- [allowEmptyPaths](Replacement.md#allowemptypaths)
+- [countMatches](Replacement.md#countmatches)
+- [disableGlobs](Replacement.md#disableglobs)
+- [dry](Replacement.md#dry)
+- [encoding](Replacement.md#encoding)
+- [files](Replacement.md#files)
+- [from](Replacement.md#from)
+- [ignore](Replacement.md#ignore)
+- [results](Replacement.md#results)
+- [to](Replacement.md#to)
 
 ## Properties
 
 ### allowEmptyPaths
 
-• `Optional` **allowEmptyPaths**: boolean
+• `Optional` **allowEmptyPaths**: `boolean`
 
-*Defined in [index.ts:83](https://github.com/google/semantic-release-replace-plugin/blob/f749696/src/index.ts#L83)*
+#### Defined in
+
+[index.ts:83](https://github.com/google/semantic-release-replace-plugin/blob/1579d05/src/index.ts#L83)
 
 ___
 
 ### countMatches
 
-• `Optional` **countMatches**: boolean
+• `Optional` **countMatches**: `boolean`
 
-*Defined in [index.ts:84](https://github.com/google/semantic-release-replace-plugin/blob/f749696/src/index.ts#L84)*
+#### Defined in
+
+[index.ts:84](https://github.com/google/semantic-release-replace-plugin/blob/1579d05/src/index.ts#L84)
 
 ___
 
 ### disableGlobs
 
-• `Optional` **disableGlobs**: boolean
+• `Optional` **disableGlobs**: `boolean`
 
-*Defined in [index.ts:85](https://github.com/google/semantic-release-replace-plugin/blob/f749696/src/index.ts#L85)*
+#### Defined in
+
+[index.ts:85](https://github.com/google/semantic-release-replace-plugin/blob/1579d05/src/index.ts#L85)
 
 ___
 
 ### dry
 
-• `Optional` **dry**: boolean
+• `Optional` **dry**: `boolean`
 
-*Defined in [index.ts:87](https://github.com/google/semantic-release-replace-plugin/blob/f749696/src/index.ts#L87)*
+#### Defined in
+
+[index.ts:87](https://github.com/google/semantic-release-replace-plugin/blob/1579d05/src/index.ts#L87)
 
 ___
 
 ### encoding
 
-• `Optional` **encoding**: string
+• `Optional` **encoding**: `string`
 
-*Defined in [index.ts:86](https://github.com/google/semantic-release-replace-plugin/blob/f749696/src/index.ts#L86)*
+#### Defined in
+
+[index.ts:86](https://github.com/google/semantic-release-replace-plugin/blob/1579d05/src/index.ts#L86)
 
 ___
 
 ### files
 
-•  **files**: string[]
-
-*Defined in [index.ts:38](https://github.com/google/semantic-release-replace-plugin/blob/f749696/src/index.ts#L38)*
+• **files**: `string`[]
 
 files to search for replacements
+
+#### Defined in
+
+[index.ts:38](https://github.com/google/semantic-release-replace-plugin/blob/1579d05/src/index.ts#L38)
 
 ___
 
 ### from
 
-•  **from**: From \| From[]
-
-*Defined in [index.ts:54](https://github.com/google/semantic-release-replace-plugin/blob/f749696/src/index.ts#L54)*
+• **from**: [`From`](../README.md#from) \| [`From`](../README.md#from)[]
 
 The RegExp pattern to use to match.
 
@@ -98,32 +102,38 @@ functions, etc.
 Multiple matchers may be provided as an array, following the same
 conversion rules as mentioned above.
 
+#### Defined in
+
+[index.ts:54](https://github.com/google/semantic-release-replace-plugin/blob/1579d05/src/index.ts#L54)
+
 ___
 
 ### ignore
 
-• `Optional` **ignore**: string[]
+• `Optional` **ignore**: `string`[]
 
-*Defined in [index.ts:82](https://github.com/google/semantic-release-replace-plugin/blob/f749696/src/index.ts#L82)*
+#### Defined in
+
+[index.ts:82](https://github.com/google/semantic-release-replace-plugin/blob/1579d05/src/index.ts#L82)
 
 ___
 
 ### results
 
-• `Optional` **results**: { file: string ; hasChanged: boolean ; numMatches?: number ; numReplacements?: number  }[]
-
-*Defined in [index.ts:92](https://github.com/google/semantic-release-replace-plugin/blob/f749696/src/index.ts#L92)*
+• `Optional` **results**: { `file`: `string` ; `hasChanged`: `boolean` ; `numMatches?`: `number` ; `numReplacements?`: `number`  }[]
 
 The results array can be passed to ensure that the expected replacements
 have been made, and if not, throw and exception with the diff.
+
+#### Defined in
+
+[index.ts:92](https://github.com/google/semantic-release-replace-plugin/blob/1579d05/src/index.ts#L92)
 
 ___
 
 ### to
 
-•  **to**: To \| To[]
-
-*Defined in [index.ts:81](https://github.com/google/semantic-release-replace-plugin/blob/f749696/src/index.ts#L81)*
+• **to**: [`To`](../README.md#to) \| [`To`](../README.md#to)[]
 
 The replacement value using a template of variables.
 
@@ -149,3 +159,7 @@ string, etc. See the `String.replace` documentation for details
 Multiple replacements may be specified as an array. These can be either
 strings or callback functions. Note that the amount of replacements needs
 to match the amount of `from` matchers.
+
+#### Defined in
+
+[index.ts:81](https://github.com/google/semantic-release-replace-plugin/blob/1579d05/src/index.ts#L81)
