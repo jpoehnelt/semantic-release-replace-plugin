@@ -20,6 +20,13 @@ import { isEqual, template } from "lodash";
 import { Context } from "semantic-release";
 import diffDefault from "jest-diff";
 
+// Redefine `replace-in-file` config's `From` and `To` types for their callback
+// variants to be compatible with passing in the `semantic-release` `Context`.
+type From = FromCallback | RegExp | string;
+type FromCallback = (filename: string, ...args: unknown[]) => RegExp | string;
+type To = string | ToCallback;
+type ToCallback = (match: string, ...args: unknown[]) => string;
+
 /**
  * Replacement is simlar to the interface used by https://www.npmjs.com/package/replace-in-file
  * with the difference being the single string for `to` and `from`.
@@ -32,9 +39,19 @@ export interface Replacement {
   /**
    * The RegExp pattern to use to match.
    *
-   * Uses `String.replace(new RegExp(s, 'g'), to)` for implementation.
+   * Uses `String.replace(new RegExp(s, 'gm'), to)` for implementation, if
+   * `from` is a string.
+   *
+   * For advanced matching, i.e. when using a `release.config.js` file, consult
+   * the documentation of the `replace-in-file` package
+   * (https://github.com/adamreisnz/replace-in-file/blob/main/README.md) on its
+   * `from` option. This allows explicit specification of `RegExp`s, callback
+   * functions, etc.
+   *
+   * Multiple matchers may be provided as an array, following the same
+   * conversion rules as mentioned above.
    */
-  from: string;
+  from: From | From[];
   /**
    * The replacement value using a template of variables.
    *
@@ -50,8 +67,18 @@ export interface Replacement {
    *    to: (matched) => `__VERSION: ${parseInt(matched.split('=')[1].trim()) + 1}`, // eslint-disable-line
    *  },
    * ```
+   *
+   * The `args` for a callback function can take a variety of shapes. In its
+   * simplest form, e.g. if `from` is a string, it's the filename in which the
+   * replacement is done. If `from` is a regular expression the `args` of the
+   * callback include captures, the offset of the matched string, the matched
+   * string, etc. See the `String.replace` documentation for details
+   *
+   * Multiple replacements may be specified as an array. These can be either
+   * strings or callback functions. Note that the amount of replacements needs
+   * to match the amount of `from` matchers.
    */
-  to: string | ((a: string) => string);
+  to: To | To[];
   ignore?: string[];
   allowEmptyPaths?: boolean;
   countMatches?: boolean;
@@ -101,6 +128,32 @@ export interface PluginConfig {
   replacements: Replacement[];
 }
 
+/**
+ * Wraps the `callback` in a new function that passes the `context` as the
+ * final argument to the `callback` when it gets called.
+ */
+function applyContextToCallback(callback: Function, context: Context) {
+  return (...args: unknown[]) => callback.apply(null, args.concat(context));
+}
+
+/**
+ * Applies the `context` to the replacement property `to` depending on whether
+ * it is a string template or a callback function.
+ */
+function applyContextToReplacement(to: To, context: Context): To {
+  return typeof to === "function"
+    ? applyContextToCallback(to, context)
+    : template(to)({ ...context });
+}
+
+/**
+ * Normalizes a `value` into an array, making it more straightforward to apply
+ * logic to a single value of type `T` or an array of those values.
+ */
+function normalizeToArray<T>(value: T | T[]): T[] {
+  return value instanceof Array ? value : [value];
+}
+
 export async function prepare(
   PluginConfig: PluginConfig,
   context: Context
@@ -112,11 +165,35 @@ export async function prepare(
 
     const replaceInFileConfig = replacement as ReplaceInFileConfig;
 
+    // The `replace-in-file` package uses `String.replace` under the hood for
+    // the actual replacement. If `from` is a string, this means only a
+    // single occurence will be replaced. This plugin intents to replace
+    // _all_ occurrences when given a string to better support
+    // configuration through JSON, this requires conversion into a `RegExp`.
+    //
+    // If `from` is a callback function, the `context` is passed as the final
+    // parameter to the function. In all other cases, e.g. being a
+    // `RegExp`, the `from` property does not require any modifications.
+    //
+    // The `from` property may either be a single value to match or an array of
+    // values (in any of the previously described forms)
+    replaceInFileConfig.from = normalizeToArray(replacement.from).map(
+      (from) => {
+        switch (typeof from) {
+          case "function":
+            return applyContextToCallback(from, context);
+          case "string":
+            return new RegExp(from, "gm");
+          default:
+            return from;
+        }
+      }
+    );
+
     replaceInFileConfig.to =
-      typeof replacement.to === "function"
-        ? replacement.to
-        : template(replacement.to)({ ...context });
-    replaceInFileConfig.from = new RegExp(replacement.from, "gm");
+      replacement.to instanceof Array
+        ? replacement.to.map((to) => applyContextToReplacement(to, context))
+        : applyContextToReplacement(replacement.to, context);
 
     let actual = await replaceInFile(replaceInFileConfig);
 

@@ -32,7 +32,7 @@ with the difference being the single string for `to` and `from`.
 
 • `Optional` **allowEmptyPaths**: boolean
 
-*Defined in [index.ts:56](https://github.com/Borduhh/semantic-release-replace-plugin/blob/6dd4918/src/index.ts#L56)*
+*Defined in [index.ts:83](https://github.com/google/semantic-release-replace-plugin/blob/60c4ca8/src/index.ts#L83)*
 
 ___
 
@@ -40,7 +40,7 @@ ___
 
 • `Optional` **countMatches**: boolean
 
-*Defined in [index.ts:57](https://github.com/Borduhh/semantic-release-replace-plugin/blob/6dd4918/src/index.ts#L57)*
+*Defined in [index.ts:84](https://github.com/google/semantic-release-replace-plugin/blob/60c4ca8/src/index.ts#L84)*
 
 ___
 
@@ -48,7 +48,7 @@ ___
 
 • `Optional` **disableGlobs**: boolean
 
-*Defined in [index.ts:58](https://github.com/Borduhh/semantic-release-replace-plugin/blob/6dd4918/src/index.ts#L58)*
+*Defined in [index.ts:85](https://github.com/google/semantic-release-replace-plugin/blob/60c4ca8/src/index.ts#L85)*
 
 ___
 
@@ -56,7 +56,7 @@ ___
 
 • `Optional` **dry**: boolean
 
-*Defined in [index.ts:60](https://github.com/Borduhh/semantic-release-replace-plugin/blob/6dd4918/src/index.ts#L60)*
+*Defined in [index.ts:87](https://github.com/google/semantic-release-replace-plugin/blob/60c4ca8/src/index.ts#L87)*
 
 ___
 
@@ -64,7 +64,7 @@ ___
 
 • `Optional` **encoding**: string
 
-*Defined in [index.ts:59](https://github.com/Borduhh/semantic-release-replace-plugin/blob/6dd4918/src/index.ts#L59)*
+*Defined in [index.ts:86](https://github.com/google/semantic-release-replace-plugin/blob/60c4ca8/src/index.ts#L86)*
 
 ___
 
@@ -72,7 +72,7 @@ ___
 
 •  **files**: string[]
 
-*Defined in [index.ts:31](https://github.com/Borduhh/semantic-release-replace-plugin/blob/6dd4918/src/index.ts#L31)*
+*Defined in [index.ts:38](https://github.com/google/semantic-release-replace-plugin/blob/60c4ca8/src/index.ts#L38)*
 
 files to search for replacements
 
@@ -80,13 +80,23 @@ ___
 
 ### from
 
-•  **from**: string
+•  **from**: From \| From[]
 
-*Defined in [index.ts:37](https://github.com/Borduhh/semantic-release-replace-plugin/blob/6dd4918/src/index.ts#L37)*
+*Defined in [index.ts:54](https://github.com/google/semantic-release-replace-plugin/blob/60c4ca8/src/index.ts#L54)*
 
 The RegExp pattern to use to match.
 
-Uses `String.replace(new RegExp(s, 'g'), to)` for implementation.
+Uses `String.replace(new RegExp(s, 'gm'), to)` for implementation, if
+`from` is a string.
+
+For advanced matching, i.e. when using a `release.config.js` file, consult
+the documentation of the `replace-in-file` package
+(https://github.com/adamreisnz/replace-in-file/blob/main/README.md) on its
+`from` option. This allows explicit specification of `RegExp`s, callback
+functions, etc.
+
+Multiple matchers may be provided as an array, following the same
+conversion rules as mentioned above.
 
 ___
 
@@ -94,7 +104,7 @@ ___
 
 • `Optional` **ignore**: string[]
 
-*Defined in [index.ts:55](https://github.com/Borduhh/semantic-release-replace-plugin/blob/6dd4918/src/index.ts#L55)*
+*Defined in [index.ts:82](https://github.com/google/semantic-release-replace-plugin/blob/60c4ca8/src/index.ts#L82)*
 
 ___
 
@@ -102,7 +112,7 @@ ___
 
 • `Optional` **results**: { file: string ; hasChanged: boolean ; numMatches?: number ; numReplacements?: number  }[]
 
-*Defined in [index.ts:65](https://github.com/Borduhh/semantic-release-replace-plugin/blob/6dd4918/src/index.ts#L65)*
+*Defined in [index.ts:92](https://github.com/google/semantic-release-replace-plugin/blob/60c4ca8/src/index.ts#L92)*
 
 The results array can be passed to ensure that the expected replacements
 have been made, and if not, throw and exception with the diff.
@@ -111,9 +121,9 @@ ___
 
 ### to
 
-•  **to**: string \| (a: string) => string
+•  **to**: To \| To[]
 
-*Defined in [index.ts:54](https://github.com/Borduhh/semantic-release-replace-plugin/blob/6dd4918/src/index.ts#L54)*
+*Defined in [index.ts:81](https://github.com/google/semantic-release-replace-plugin/blob/60c4ca8/src/index.ts#L81)*
 
 The replacement value using a template of variables.
 
@@ -122,10 +132,20 @@ The replacement value using a template of variables.
 The context object is used to render the template. Additional values
 can be found at: https://semantic-release.gitbook.io/semantic-release/developer-guide/js-api#result
 
-For advacned replacement, pass in a function to replace non-standard variables
+For advanced replacement (NOTE: only for use with `release.config.js` file version), pass in a function to replace non-standard variables
 ```
 {
    from: `__VERSION__ = 11`, // eslint-disable-line
    to: (matched) => `__VERSION: ${parseInt(matched.split('=')[1].trim()) + 1}`, // eslint-disable-line
  },
 ```
+
+The `args` for a callback function can take a variety of shapes. In its
+simplest form, e.g. if `from` is a string, it's the filename in which the
+replacement is done. If `from` is a regular expression the `args` of the
+callback include captures, the offset of the matched string, the matched
+string, etc. See the `String.replace` documentation for details
+
+Multiple replacements may be specified as an array. These can be either
+strings or callback functions. Note that the amount of replacements needs
+to match the amount of `from` matchers.

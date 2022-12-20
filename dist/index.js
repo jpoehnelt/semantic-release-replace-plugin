@@ -69,6 +69,35 @@ exports.prepare = void 0;
 var replace_in_file_1 = require("replace-in-file");
 var lodash_1 = require("lodash");
 var jest_diff_1 = __importDefault(require("jest-diff"));
+/**
+ * Wraps the `callback` in a new function that passes the `context` as the
+ * final argument to the `callback` when it gets called.
+ */
+function applyContextToCallback(callback, context) {
+    return function () {
+        var args = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            args[_i] = arguments[_i];
+        }
+        return callback.apply(null, args.concat(context));
+    };
+}
+/**
+ * Applies the `context` to the replacement property `to` depending on whether
+ * it is a string template or a callback function.
+ */
+function applyContextToReplacement(to, context) {
+    return typeof to === "function"
+        ? applyContextToCallback(to, context)
+        : lodash_1.template(to)(__assign({}, context));
+}
+/**
+ * Normalizes a `value` into an array, making it more straightforward to apply
+ * logic to a single value of type `T` or an array of those values.
+ */
+function normalizeToArray(value) {
+    return value instanceof Array ? value : [value];
+}
 function prepare(PluginConfig, context) {
     return __awaiter(this, void 0, void 0, function () {
         var _i, _a, replacement, results, replaceInFileConfig, actual;
@@ -83,11 +112,32 @@ function prepare(PluginConfig, context) {
                     results = replacement.results;
                     delete replacement.results;
                     replaceInFileConfig = replacement;
+                    // The `replace-in-file` package uses `String.replace` under the hood for
+                    // the actual replacement. If `from` is a string, this means only a
+                    // single occurence will be replaced. This plugin intents to replace
+                    // _all_ occurrences when given a string to better support
+                    // configuration through JSON, this requires conversion into a `RegExp`.
+                    //
+                    // If `from` is a callback function, the `context` is passed as the final
+                    // parameter to the function. In all other cases, e.g. being a
+                    // `RegExp`, the `from` property does not require any modifications.
+                    //
+                    // The `from` property may either be a single value to match or an array of
+                    // values (in any of the previously described forms)
+                    replaceInFileConfig.from = normalizeToArray(replacement.from).map(function (from) {
+                        switch (typeof from) {
+                            case "function":
+                                return applyContextToCallback(from, context);
+                            case "string":
+                                return new RegExp(from, "gm");
+                            default:
+                                return from;
+                        }
+                    });
                     replaceInFileConfig.to =
-                        typeof replacement.to === "function"
-                            ? replacement.to
-                            : lodash_1.template(replacement.to)(__assign({}, context));
-                    replaceInFileConfig.from = new RegExp(replacement.from, "gm");
+                        replacement.to instanceof Array
+                            ? replacement.to.map(function (to) { return applyContextToReplacement(to, context); })
+                            : applyContextToReplacement(replacement.to, context);
                     return [4 /*yield*/, replace_in_file_1.replaceInFile(replaceInFileConfig)];
                 case 2:
                     actual = _b.sent();
