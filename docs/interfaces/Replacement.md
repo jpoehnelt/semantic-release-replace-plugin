@@ -28,7 +28,7 @@ with the difference being the single string for `to` and `from`.
 
 #### Defined in
 
-[index.ts:83](https://github.com/google/semantic-release-replace-plugin/blob/1579d05/src/index.ts#L83)
+[index.ts:87](https://github.com/google/semantic-release-replace-plugin/blob/16d6546/src/index.ts#L87)
 
 ___
 
@@ -38,7 +38,7 @@ ___
 
 #### Defined in
 
-[index.ts:84](https://github.com/google/semantic-release-replace-plugin/blob/1579d05/src/index.ts#L84)
+[index.ts:88](https://github.com/google/semantic-release-replace-plugin/blob/16d6546/src/index.ts#L88)
 
 ___
 
@@ -48,7 +48,7 @@ ___
 
 #### Defined in
 
-[index.ts:85](https://github.com/google/semantic-release-replace-plugin/blob/1579d05/src/index.ts#L85)
+[index.ts:89](https://github.com/google/semantic-release-replace-plugin/blob/16d6546/src/index.ts#L89)
 
 ___
 
@@ -58,7 +58,7 @@ ___
 
 #### Defined in
 
-[index.ts:87](https://github.com/google/semantic-release-replace-plugin/blob/1579d05/src/index.ts#L87)
+[index.ts:91](https://github.com/google/semantic-release-replace-plugin/blob/16d6546/src/index.ts#L91)
 
 ___
 
@@ -68,7 +68,7 @@ ___
 
 #### Defined in
 
-[index.ts:86](https://github.com/google/semantic-release-replace-plugin/blob/1579d05/src/index.ts#L86)
+[index.ts:90](https://github.com/google/semantic-release-replace-plugin/blob/16d6546/src/index.ts#L90)
 
 ___
 
@@ -80,7 +80,7 @@ files to search for replacements
 
 #### Defined in
 
-[index.ts:38](https://github.com/google/semantic-release-replace-plugin/blob/1579d05/src/index.ts#L38)
+[index.ts:42](https://github.com/google/semantic-release-replace-plugin/blob/16d6546/src/index.ts#L42)
 
 ___
 
@@ -104,7 +104,7 @@ conversion rules as mentioned above.
 
 #### Defined in
 
-[index.ts:54](https://github.com/google/semantic-release-replace-plugin/blob/1579d05/src/index.ts#L54)
+[index.ts:58](https://github.com/google/semantic-release-replace-plugin/blob/16d6546/src/index.ts#L58)
 
 ___
 
@@ -114,7 +114,7 @@ ___
 
 #### Defined in
 
-[index.ts:82](https://github.com/google/semantic-release-replace-plugin/blob/1579d05/src/index.ts#L82)
+[index.ts:86](https://github.com/google/semantic-release-replace-plugin/blob/16d6546/src/index.ts#L86)
 
 ___
 
@@ -127,7 +127,7 @@ have been made, and if not, throw and exception with the diff.
 
 #### Defined in
 
-[index.ts:92](https://github.com/google/semantic-release-replace-plugin/blob/1579d05/src/index.ts#L92)
+[index.ts:96](https://github.com/google/semantic-release-replace-plugin/blob/16d6546/src/index.ts#L96)
 
 ___
 
@@ -162,4 +162,4 @@ to match the amount of `from` matchers.
 
 #### Defined in
 
-[index.ts:81](https://github.com/google/semantic-release-replace-plugin/blob/1579d05/src/index.ts#L81)
+[index.ts:85](https://github.com/google/semantic-release-replace-plugin/blob/16d6546/src/index.ts#L85)
