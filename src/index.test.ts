@@ -14,16 +14,19 @@
  * limitations under the License.
  */
 
-import * as fs from "fs-extra";
-import * as path from "path";
-import * as tmp from "tmp";
+import * as m from "./index";
+import type { ToCallback, FromCallback } from "./index";
+import fs from "fs-extra";
+import path from "path";
+import tmp, { DirResult } from "tmp";
 import { Context } from "semantic-release";
+import { test, vi, expect, beforeEach, afterEach } from "vitest";
 
-import { prepare } from "../src/index";
+import { prepare } from "./index";
 
-const context = {
+const context: Context = {
   lastRelease: {
-    gitHead: "asdfasdf",
+    gitHead: "foo",
     gitTag: "v1.0.0",
     version: "1.0.0",
   },
@@ -32,35 +35,46 @@ const context = {
     gitTag: "2.0.0",
     version: "2.0.0",
     notes: "",
-    gitHead: "asdfasdf",
+    gitHead: "foo",
   },
   logger: {
-    log: jest.fn(),
+    log: vi.fn(),
     error: console.error,
-  },
-  env: process.env,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } as any,
+  env: {},
 };
 
-let d: tmp.DirSyncObject;
+let d: DirResult;
 
 beforeEach(() => {
   d = tmp.dirSync({ unsafeCleanup: true });
-  fs.copySync("__tests__/project", d.name);
+  fs.copySync("fixtures", d.name);
 });
 
 afterEach(() => {
   d.removeCallback();
 });
 
-async function assertFileContents(name: string, expected: string) {
+async function assertFileContents(
+  name: string,
+  expected: string
+): Promise<void> {
   const actual = await fs.readFileSync(path.join(d.name, name), "utf-8");
   expect(actual).toEqual(expected);
 }
 
-async function assertFileContentsContain(name: string, expected: string) {
+async function assertFileContentsContain(
+  name: string,
+  expected: string
+): Promise<void> {
   const actual = await fs.readFileSync(path.join(d.name, name), "utf-8");
   expect(actual).toEqual(expect.stringContaining(expected));
 }
+
+test("should expose prepare", async () => {
+  expect(m.prepare).toBeDefined();
+});
 
 test("prepare should replace using regex", async () => {
   const replacements = [
@@ -80,11 +94,11 @@ test("prepare should replace using regex", async () => {
 
   await assertFileContentsContain(
     "__init__.py",
-    `__VERSION__ = "${context.nextRelease.version}"`
+    `__VERSION__ = "${context.nextRelease?.version}"`
   );
   await assertFileContents(
     "build.gradle",
-    `version = '${context.nextRelease.version}'`
+    `version = '${context.nextRelease?.version}'`
   );
 });
 
@@ -110,7 +124,7 @@ test("prepare should use result check", async () => {
 
   await assertFileContentsContain(
     "__init__.py",
-    `__VERSION__ = "${context.nextRelease.version}"`
+    `__VERSION__ = "${context.nextRelease?.version}"`
   );
 });
 
@@ -149,7 +163,7 @@ test("prepare should use result check", async () => {
 
   await assertFileContentsContain(
     "__init__.py",
-    `__VERSION__ = "${context.nextRelease.version}"`
+    `__VERSION__ = "${context.nextRelease?.version}"`
   );
 });
 
@@ -201,7 +215,7 @@ test("prepare accepts regular expressions for `from`", async () => {
     {
       files: [path.join(d.name, "/foo.md")],
       from: /yarn(.+?)@.*/g,
-      to: `yarn add foo@${context.nextRelease.version}`,
+      to: `yarn add foo@${context.nextRelease?.version}`,
     },
   ];
 
@@ -216,7 +230,7 @@ test("prepare accepts callback functions for `from`", async () => {
     {
       files: [path.join(d.name, "/foo.md")],
       from: (filename: string) => `${path.basename(filename, ".md")}@1.0.0`, // Equivalent to "foo@1.0.0"
-      to: `foo@${context.nextRelease.version}`,
+      to: `foo@${context.nextRelease?.version}`,
     },
   ];
 
@@ -236,11 +250,11 @@ test("prepare accepts multi-argument `to` callback functions for regular express
     {
       files: [path.join(d.name, "/foo.md")],
       from: /npm i (.+)@(.+)`/g,
-      to: (match: string, package_name: string, version: string) => {
+      to: ((match: string, packageName: string, version: string) => {
         return match
-          .replace(version, context.nextRelease.version)
-          .replace(package_name, package_name.split("").reverse().join(""));
-      },
+          .replace(version, context.nextRelease?.version ?? version)
+          .replace(packageName, packageName.split("").reverse().join(""));
+      }) as ToCallback,
     },
   ];
 
@@ -256,8 +270,8 @@ test("prepare passes the `context` as the final function argument to `from` call
       files: [path.join(d.name, "/foo.md")],
       // Returns a regular expression matching the previous version, so that
       // _all_ occurrences in the document are updated
-      from: (_: string, context: Context) =>
-        new RegExp(context?.lastRelease?.version || "", "g"),
+      from: ((_: string, context: Context) =>
+        new RegExp(context?.lastRelease?.version || "", "g")) as FromCallback,
       to: "3.0.0",
     },
   ];
@@ -273,12 +287,12 @@ test("prepare passes the `context` as the final function argument to `to` callba
     {
       files: [path.join(d.name, "/foo.md")],
       from: /npm i (.*)@(.*)`/,
-      to: (_: string, package_name: string, ...args: unknown[]) => {
+      to: ((_: string, package_name: string, ...args: unknown[]) => {
         const reversed_package_name = package_name.split("").reverse().join("");
         const context = args.pop() as Context;
 
         return `npm i ${reversed_package_name}@${context?.nextRelease?.version}`;
-      },
+      }) as ToCallback,
     },
   ];
 
@@ -286,7 +300,7 @@ test("prepare passes the `context` as the final function argument to `to` callba
 
   await assertFileContentsContain(
     "foo.md",
-    `npm i oof@${context.nextRelease.version}`
+    `npm i oof@${context.nextRelease?.version}`
   );
   await assertFileContentsContain("foo.md", "yarn add foo@1.0.0");
 });
@@ -336,10 +350,10 @@ test("prepare accepts an array of `to` replacements", async () => {
 
   await assertFileContentsContain(
     "foo.md",
-    `npm install foo@${context.nextRelease.version}`
+    `npm install foo@${context.nextRelease?.version}`
   );
   await assertFileContentsContain(
     "foo.md",
-    `yarn add foo@${context.nextRelease.version}`
+    `yarn add foo@${context.nextRelease?.version}`
   );
 });

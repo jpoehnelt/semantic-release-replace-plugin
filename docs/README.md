@@ -28,7 +28,7 @@
 
 #### Defined in
 
-[index.ts:25](https://github.com/google/semantic-release-replace-plugin/blob/1579d05/src/index.ts#L25)
+[index.ts:26](https://github.com/google/semantic-release-replace-plugin/blob/16d6546/src/index.ts#L26)
 
 ___
 
@@ -53,7 +53,7 @@ ___
 
 #### Defined in
 
-[index.ts:26](https://github.com/google/semantic-release-replace-plugin/blob/1579d05/src/index.ts#L26)
+[index.ts:27](https://github.com/google/semantic-release-replace-plugin/blob/16d6546/src/index.ts#L27)
 
 ___
 
@@ -63,7 +63,7 @@ ___
 
 #### Defined in
 
-[index.ts:27](https://github.com/google/semantic-release-replace-plugin/blob/1579d05/src/index.ts#L27)
+[index.ts:31](https://github.com/google/semantic-release-replace-plugin/blob/16d6546/src/index.ts#L31)
 
 ___
 
@@ -88,7 +88,7 @@ ___
 
 #### Defined in
 
-[index.ts:28](https://github.com/google/semantic-release-replace-plugin/blob/1579d05/src/index.ts#L28)
+[index.ts:32](https://github.com/google/semantic-release-replace-plugin/blob/16d6546/src/index.ts#L32)
 
 ## Functions
 
@@ -109,4 +109,4 @@ ___
 
 #### Defined in
 
-[index.ts:161](https://github.com/google/semantic-release-replace-plugin/blob/1579d05/src/index.ts#L161)
+[index.ts:163](https://github.com/google/semantic-release-replace-plugin/blob/16d6546/src/index.ts#L163)

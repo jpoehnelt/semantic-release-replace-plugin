@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-import { ReplaceInFileConfig, replaceInFile } from "replace-in-file";
-import { isEqual, template } from "lodash";
+import replace from "replace-in-file";
+import type { ReplaceInFileConfig, replaceInFile } from "replace-in-file";
+import { isEqual, template } from "lodash-es";
 
 import { Context } from "semantic-release";
 import diffDefault from "jest-diff";
@@ -135,10 +136,8 @@ export interface PluginConfig {
  * Wraps the `callback` in a new function that passes the `context` as the
  * final argument to the `callback` when it gets called.
  */
-function applyContextToCallback(
-  callback: ToCallback | FromCallback,
-  context: Context
-) {
+// eslint-disable-next-line @typescript-eslint/ban-types
+function applyContextToCallback(callback: Function, context: Context) {
   // eslint-disable-next-line prefer-spread
   return (...args: unknown[]) => callback.apply(null, args.concat(context));
 }
@@ -202,7 +201,9 @@ export async function prepare(
         ? replacement.to.map((to) => applyContextToReplacement(to, context))
         : applyContextToReplacement(replacement.to, context);
 
-    let actual = await replaceInFile(replaceInFileConfig);
+    let actual = await (replace as unknown as typeof replaceInFile)(
+      replaceInFileConfig
+    );
 
     if (results) {
       results = results.sort();
