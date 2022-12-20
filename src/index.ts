@@ -22,10 +22,13 @@ import diffDefault from "jest-diff";
 
 // Redefine `replace-in-file` config's `From` and `To` types for their callback
 // variants to be compatible with passing in the `semantic-release` `Context`.
-type From = FromCallback | RegExp | string;
-type FromCallback = (filename: string, ...args: unknown[]) => RegExp | string;
-type To = string | ToCallback;
-type ToCallback = (match: string, ...args: unknown[]) => string;
+export type From = FromCallback | RegExp | string;
+export type FromCallback = (
+  filename: string,
+  ...args: unknown[]
+) => RegExp | string;
+export type To = string | ToCallback;
+export type ToCallback = (match: string, ...args: unknown[]) => string;
 
 /**
  * Replacement is similar to the interface used by https://www.npmjs.com/package/replace-in-file

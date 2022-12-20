@@ -16,12 +16,9 @@
 
 module.exports = {
   excludeExternals: true,
-  excludeNotExported: true,
   excludePrivate: true,
   hideGenerator: true,
   out: "docs",
-  module: "commonjs",
-  stripInternal: true,
   theme: "markdown",
   readme: "none",
 };
