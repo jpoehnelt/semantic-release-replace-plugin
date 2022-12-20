@@ -29,7 +29,7 @@
     "docs": "rm -rf docs && typedoc src/index.ts",
     "lint": "eslint src/**/*.ts",
     "format": "npm run lint -- --fix",
-    "test": "tsc --noEmit && vitest"
+    "test": "tsc --noEmit && vitest --coverage"
   },
   "dependencies": {
     "jest-diff": "^26.5.2",
@@ -43,6 +43,7 @@
     "@types/tmp": "^0.2.3",
     "@typescript-eslint/eslint-plugin": "^5.47.0",
     "@typescript-eslint/parser": "^5.47.0",
+    "@vitest/coverage-c8": "^0.26.0",
     "eslint": "^8.30.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.2.1",
