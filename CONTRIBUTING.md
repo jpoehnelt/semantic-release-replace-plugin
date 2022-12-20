@@ -47,15 +47,11 @@ accept your pull requests.
 
 1.  Run the tests:
 
-        # Run unit tests.
         npm test
-
-        # Run lint check.
-        npm run lint
 
 1.  Lint (and maybe fix) any changes:
 
+        npm run lint
         npm run format
-        npm run lint-fix
 
 [setup]: https://cloud.google.com/nodejs/docs/setup
