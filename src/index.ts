@@ -28,7 +28,7 @@ type To = string | ToCallback;
 type ToCallback = (match: string, ...args: unknown[]) => string;
 
 /**
- * Replacement is simlar to the interface used by https://www.npmjs.com/package/replace-in-file
+ * Replacement is similar to the interface used by https://www.npmjs.com/package/replace-in-file
  * with the difference being the single string for `to` and `from`.
  */
 export interface Replacement {
@@ -132,7 +132,11 @@ export interface PluginConfig {
  * Wraps the `callback` in a new function that passes the `context` as the
  * final argument to the `callback` when it gets called.
  */
-function applyContextToCallback(callback: Function, context: Context) {
+function applyContextToCallback(
+  callback: ToCallback | FromCallback,
+  context: Context
+) {
+  // eslint-disable-next-line prefer-spread
   return (...args: unknown[]) => callback.apply(null, args.concat(context));
 }
 
@@ -167,7 +171,7 @@ export async function prepare(
 
     // The `replace-in-file` package uses `String.replace` under the hood for
     // the actual replacement. If `from` is a string, this means only a
-    // single occurence will be replaced. This plugin intents to replace
+    // single occurrence will be replaced. This plugin intents to replace
     // _all_ occurrences when given a string to better support
     // configuration through JSON, this requires conversion into a `RegExp`.
     //

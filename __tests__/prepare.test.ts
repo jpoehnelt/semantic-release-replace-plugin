@@ -44,13 +44,11 @@ const context = {
 let d: tmp.DirSyncObject;
 
 beforeEach(() => {
-  // @ts-ignore-next-line
   d = tmp.dirSync({ unsafeCleanup: true });
   fs.copySync("__tests__/project", d.name);
 });
 
 afterEach(() => {
-  // @ts-ignore-next-line
   d.removeCallback();
 });
 
@@ -183,12 +181,12 @@ test("prepare should replace using function", async () => {
     {
       files: [path.join(d.name, "/*.py")],
       from: '__VERSION__ = ".*"',
-      to: (match) => `__VERSION__ = 2`,
+      to: () => `__VERSION__ = 2`,
     },
     {
       files: [path.join(d.name, "/build.gradle")],
       from: "version = '.*'",
-      to: (match) => "version = 2",
+      to: () => "version = 2",
     },
   ];
 
@@ -276,8 +274,8 @@ test("prepare passes the `context` as the final function argument to `to` callba
       files: [path.join(d.name, "/foo.md")],
       from: /npm i (.*)@(.*)`/,
       to: (_: string, package_name: string, ...args: unknown[]) => {
-        let reversed_package_name = package_name.split("").reverse().join("");
-        let context = args.pop() as Context;
+        const reversed_package_name = package_name.split("").reverse().join("");
+        const context = args.pop() as Context;
 
         return `npm i ${reversed_package_name}@${context?.nextRelease?.version}`;
       },

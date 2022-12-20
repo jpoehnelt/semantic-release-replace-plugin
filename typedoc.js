@@ -23,5 +23,5 @@ module.exports = {
   module: "commonjs",
   stripInternal: true,
   theme: "markdown",
-  readme: "none"
+  readme: "none",
 };
