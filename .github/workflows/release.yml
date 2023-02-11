@@ -12,6 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+concurrency:
+   # For pull requests, cancel all currently-running jobs for this workflow
+   # https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#concurrency
+   group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+   cancel-in-progress: true
+
 name: "Release"
 on:
   push:
@@ -21,20 +27,23 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - name: Test
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install dependencies and run tests
         run: |
-          npm i
+          npm ci
           npm test
-      - name: Release
+
+      - name: Semantic Release
         uses: cycjimmy/semantic-release-action@v2
         with:
           extra_plugins: |
             "@semantic-release/commit-analyzer"
             "@semantic-release/release-notes-generator"
-            "@semantic-release/git
-            "@semantic-release/github
-            "@semantic-release/npm
+            "@semantic-release/git"
+            "@semantic-release/github"
+            "@semantic-release/npm"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_WOMBAT_TOKEN }}
