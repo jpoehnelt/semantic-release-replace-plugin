@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-import * as m from "./index";
-import type { ToCallback, FromCallback } from "./index";
+import * as m from "./index.js";
+import type { ToCallback, FromCallback } from "./index.js";
 import fs from "fs-extra";
 import path from "path";
 import tmp, { DirResult } from "tmp";
 import { Context } from "semantic-release";
 import { test, vi, expect, beforeEach, afterEach } from "vitest";
 
-import { prepare } from "./index";
+import { prepare } from "./index.js";
 
 const context: Context = {
   branch: {
