@@ -25,6 +25,9 @@ import { test, vi, expect, beforeEach, afterEach } from "vitest";
 import { prepare } from "./index";
 
 const context: Context = {
+  branch: {
+    name: "foo",
+  },
   lastRelease: {
     gitHead: "foo",
     gitTag: "v1.0.0",

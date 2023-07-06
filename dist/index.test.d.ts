@@ -13,12 +13,4 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-module.exports = {
-  excludeExternals: true,
-  excludePrivate: true,
-  hideGenerator: true,
-  out: "docs",
-  plugin: ["typedoc-plugin-markdown"],
-  readme: "none",
-};
+export {};
