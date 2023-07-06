@@ -62,7 +62,6 @@
     "vitest": "^0.32.4"
   },
   "publishConfig": {
-    "access": "public",
-    "registry": "https://wombat-dressing-room.appspot.com"
+    "access": "public"
   }
 }
