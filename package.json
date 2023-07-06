@@ -16,7 +16,8 @@
     "name": "Justin Poehnelt",
     "email": "justin.poehnelt@gmail.com"
   },
-  "main": "dist/index.js",
+  "type": "module",
+  "main": "./dist/index.js",
   "files": [
     "dist/*",
     "LICENSE",

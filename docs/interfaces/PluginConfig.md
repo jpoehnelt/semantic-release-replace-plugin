@@ -1,4 +1,4 @@
-[@google/semantic-release-replace-plugin](../README.md) / PluginConfig
+[semantic-release-replace-plugin](../README.md) / PluginConfig
 
 # Interface: PluginConfig
 
@@ -44,4 +44,4 @@ An array of replacements to be made.
 
 #### Defined in
 
-[index.ts:132](https://github.com/google/semantic-release-replace-plugin/blob/16d6546/src/index.ts#L132)
+[index.ts:132](https://github.com/jpoehnelt/semantic-release-replace-plugin/blob/c94a018/src/index.ts#L132)
