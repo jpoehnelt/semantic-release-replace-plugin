@@ -1,5 +1,5 @@
 {
-  "name": "@jpoehnelt/semantic-release-replace-plugin",
+  "name": "@google/semantic-release-replace-plugin",
   "version": "1.2.0",
   "description": "Semantic Release Replace Plugin",
   "keywords": [
