@@ -31,4 +31,4 @@ jobs:
           npx semantic-release
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_WOMBAT_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
