@@ -19,6 +19,5 @@ module.exports = {
   excludePrivate: true,
   hideGenerator: true,
   out: "docs",
-  theme: "markdown",
   readme: "none",
 };
