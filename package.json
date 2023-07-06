@@ -17,13 +17,7 @@
     "email": "justin.poehnelt@gmail.com"
   },
   "type": "module",
-  "main": "dist/index.js",
-  "exports": {
-    ".": {
-      "import": "./dist/esm/index.js",
-      "require": "./dist/cjs/index.js"
-    }
-  },
+  "main": "./dist/index.js",
   "files": [
     "dist/*",
     "LICENSE",
@@ -31,9 +25,7 @@
   ],
   "scripts": {
     "all": "npm run build && npm run lint && npm test && npm run docs",
-    "build": "tsc --emitDeclarationOnly && npm run build:esm && npm run build:cjs",
-    "build:esm": "tsc --module ES2020 --outDir dist/esm",
-    "build:cjs": "tsc --module CommonJS --outDir dist/cjs",
+    "build": "tsc",
     "docs": "rm -rf docs && typedoc src/index.ts",
     "lint": "eslint src/**/*.ts",
     "format": "npm run lint -- --fix",
