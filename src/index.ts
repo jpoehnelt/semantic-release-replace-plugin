@@ -19,7 +19,7 @@ import type { ReplaceInFileConfig, replaceInFile } from "replace-in-file";
 import { isEqual, template } from "lodash-es";
 
 import { Context } from "semantic-release";
-import diffDefault from "jest-diff";
+import { diff } from "jest-diff";
 
 // Redefine `replace-in-file` config's `From` and `To` types for their callback
 // variants to be compatible with passing in the `semantic-release` `Context`.
@@ -210,9 +210,7 @@ export async function prepare(
       actual = actual.sort();
 
       if (!isEqual(actual.sort(), results.sort())) {
-        throw new Error(
-          `Expected match not found!\n${diffDefault(actual, results)}`
-        );
+        throw new Error(`Expected match not found!\n${diff(actual, results)}`);
       }
     }
   }
