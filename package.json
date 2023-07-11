@@ -1,6 +1,6 @@
 {
   "name": "semantic-release-replace-plugin",
-  "version": "1.2.5",
+  "version": "1.2.6",
   "description": "Semantic Release Replace Plugin",
   "keywords": [
     "semantic-release",
