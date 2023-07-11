@@ -22,11 +22,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Test
-        run: |
+      - run: |
           npm i
-          npm run build
-          npm test
+          npm run all
       - name: Release
         run: |
           npx semantic-release
